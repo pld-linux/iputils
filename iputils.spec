@@ -17,8 +17,8 @@ Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}-try.tar.bz2
 Patch0:		%{name}-ping6-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
-Patch3:		%{name}-Makefile.patch
-Patch4:		%{name}-gkh.patch
+Patch3:		%{name}-gkh.patch
+Patch4:		%{name}-Makefile.patch
 BuildRequires:	linux-libc-headers
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
@@ -78,8 +78,8 @@ ping wykorzystuj±cy IPv4.
 %patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p0
-%patch4 -p1
+%patch3 -p1
+%patch4 -p0
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
