@@ -5,7 +5,7 @@ Version:	ss000121
 Release:	1
 Epoch:		1
 Group:		Networking/Admin
-Group(pl):	Sieciowe/Administracja
+Group(pl):	Sieciowe/Administracyjne
 Copyright:	GPL
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		iputils-resolv.patch
@@ -48,7 +48,7 @@ Narzêdzia przeznaczone dla sieci IPv4/IPv6:
 Summary:        IPv4 ping
 Summary(pl):    ping wykorzystuj±cy IPv4
 Group:          Networking/Admin
-Group(pl):      Sieciowe/Administracja
+Group(pl):      Sieciowe/Administracyjne
 
 %description ping
 IPv4 ping
