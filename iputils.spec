@@ -101,9 +101,3 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(4755,root,icmp) %{_sbindir}/ping
 %attr(644,root,root)  %{_mandir}/man8/ping.8.gz
-
-%changelog
-* Sun Jul 11 1999 PLD Team <pld-list@pld.org.pl>
- $Log: iputils.spec,v $
- Revision 1.6  1999-07-11 17:53:17  misiek
- big update
