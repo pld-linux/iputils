@@ -1,6 +1,6 @@
 #
 # Conditional build
-%bcond_without	docs	# don't build documentation
+%bcond_without	doc	# don't build documentation
 
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
@@ -20,7 +20,7 @@ Patch2:		%{name}-pmake.patch
 Patch3:		%{name}-Makefile.patch
 Patch4:		%{name}-gkh.patch
 BuildRequires:	linux-libc-headers
-%if %{with docs}
+%if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
@@ -87,7 +87,7 @@ ping wykorzystuj±cy IPv4.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
-%{?with_docs:	%{__make} html}
+%{?with_doc:	%{__make} html}
 %{__make} man
 
 %install
@@ -107,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES %{?with_docs: doc/*.html}
+%doc RELNOTES %{?with_doc: doc/*.html}
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
