@@ -1,3 +1,7 @@
+#  
+# Conditional build
+# _without_docs	- don't build documentation
+#
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Summary(ru):	îÁÂÏÒ ÂÁÚÏ×ÙÈ ÓÅÔÅ×ÙÈ ÕÔÉÌÉÔ (ping, tracepath etc.)
@@ -14,9 +18,9 @@ Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
 Patch3:		%{name}-20001007-rh7.patch
-BuildRequires:	docbook-dtd30-sgml
-BuildRequires:	docbook-dtd31-sgml
-BuildRequires:	docbook-utils >= 0.6.10
+%{!?_without_docs:BuildRequires:	docbook-dtd30-sgml}
+%{!?_without_docs:BuildRequires:	docbook-dtd31-sgml}
+%{!?_without_docs:BuildRequires:	docbook-utils >= 0.6.10}
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -78,8 +82,8 @@ ping wykorzystuj±cy IPv4.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
-%{__make} html
-%{__make} man
+%{!?_without_docs:	%{__make} html}
+%{!?_without_docs:	%{__make} man}
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -98,7 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES doc/*.html Modules
+%doc RELNOTES 
+%{!?_without_docs:%dir doc/*.html Modules}
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
