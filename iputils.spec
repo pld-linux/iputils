@@ -2,23 +2,25 @@ Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
 Version:	ss001110
-Release:	2
+Release:	3
 Epoch:		1
-License:	GPL
+License:	BSD
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administacyjne
+Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-opt.patch
 Patch1:		%{name}-glibc.patch
+Patch2:		%{name}-bug23844.patch
+Patch3:		%{name}-ping-deadline.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	traceroute
 
 %description
 IPv4/IPv6 networking utils:
 - clockdiff Measures clock difference between us and <destination>
-  with 1msec resolution. Without -o option it uses icmp timestamps,
-  with -o it uses icmp echo with timestamp IP option,
+  with 1msec resolution. Without -o option it uses icmp timestamps, with
+  -o it uses icmp echo with timestamp IP option,
 - ping/ping6,
 - traceroute6,
 - arping Ping <address> on device <interface> by ARP packets, using
@@ -44,7 +46,7 @@ Summary:	IPv4 ping
 Summary(pl):	ping wykorzystuj±cy IPv4
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administacyjne
+Group(pl):	Sieciowe/Administracyjne
 
 %description ping
 IPv4 ping.
@@ -56,6 +58,8 @@ ping wykorzystuj±cy IPv4.
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
+%patch3 -p1
 
 %build
 %{__make} OPT="%{rpmcflags} -DHAVE_SIN6_SCOPEID=1" all
@@ -76,10 +80,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(0755,root,root) %{_sbindir}/tracepat*
-%attr(4750,root,icmp) %{_sbindir}/traceroute6
+%attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(0755,root,root) %{_sbindir}/rdisc
-%attr(4750,root,icmp) %{_sbindir}/arping
-%attr(4750,root,icmp) %{_sbindir}/clockdiff
+%attr(4754,root,adm) %{_sbindir}/arping
+%attr(4754,root,adm) %{_sbindir}/clockdiff
 %{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
@@ -87,5 +91,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4750,root,icmp) %{_sbindir}/ping*
+%attr(4754,root,adm) %{_sbindir}/ping*
 %{_mandir}/man8/ping.8*
