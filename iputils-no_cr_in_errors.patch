@@ -1,0 +1,32 @@
+diff -urN iputils.orig/ping6.c iputils/ping6.c
+--- iputils.orig/ping6.c	Thu Feb 21 21:55:30 2002
++++ iputils/ping6.c	Thu Feb 21 21:56:27 2002
+@@ -785,22 +785,22 @@
+ 		printf("Destination unreachable: ");
+ 		switch (code) {
+ 		case ICMPV6_NOROUTE:
+-			printf("No route");
++			printf("No route\n");
+ 			break;
+ 		case ICMPV6_ADM_PROHIBITED:
+-			printf("Administratively prohibited");
++			printf("Administratively prohibited\n");
+ 			break;
+ 		case ICMPV6_NOT_NEIGHBOUR:
+-			printf("Not neighbour");
++			printf("Not neighbour\n");
+ 			break;
+ 		case ICMPV6_ADDR_UNREACH:
+-			printf("Address unreachable");
++			printf("Address unreachable\n");
+ 			break;
+ 		case ICMPV6_PORT_UNREACH:
+-			printf("Port unreachable");
++			printf("Port unreachable\n");
+ 			break;
+ 		default:	
+-			printf("Unknown code %d", code);
++			printf("Unknown code %d\n", code);
+ 			break;
+ 		}
+ 		break;
