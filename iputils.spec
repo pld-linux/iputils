@@ -9,10 +9,6 @@ Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
-Patch0:		%{name}-opt.patch
-Patch1:		%{name}-glibc.patch
-Patch2:		%{name}-bug23844.patch
-Patch3:		%{name}-ping-deadline.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -55,13 +51,9 @@ ping wykorzystuj±cy IPv4.
 
 %prep
 %setup  -q -n %{name}
-#%patch0 -p1
-#%patch1 -p1
-#%patch2 -p1
-#%patch3 -p1
 
 %build
-%{__make} OPT="%{rpmcflags} -DHAVE_SIN6_SCOPEID=1" all
+%{__make} CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
