@@ -19,7 +19,7 @@ Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
 Patch3:		%{name}-Makefile.patch
 Patch4:		%{name}-gkh.patch
-BuildRequires:	glibc-kernel-headers >= 7:2.6.1.1-1
+BuildRequires:	linux-libc-headers
 %if %{with docs}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
