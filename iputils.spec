@@ -11,6 +11,7 @@ Group:		Networking/Admin
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
+Patch2:		%{name}-pmake.patch
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
@@ -66,6 +67,7 @@ ping wykorzystuj±cy IPv4.
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
@@ -73,7 +75,8 @@ ping wykorzystuj±cy IPv4.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
-%{__make} html man
+%{__make} html
+%{__make} man
 
 %install
 rm -rf $RPM_BUILD_ROOT
