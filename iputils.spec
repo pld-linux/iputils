@@ -2,7 +2,7 @@ Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
 Version:	ss001110
-Release:	3
+Release:	4
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -14,7 +14,6 @@ Patch1:		%{name}-glibc.patch
 Patch2:		%{name}-bug23844.patch
 Patch3:		%{name}-ping-deadline.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Obsoletes:	traceroute
 
 %description
 IPv4/IPv6 networking utils:
