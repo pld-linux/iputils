@@ -1,0 +1,77 @@
+diff -uNr iputils/ping.8 iputils.fix/ping.8
+--- iputils.orig/ping.8	Thu Nov  2 21:53:26 2000
++++ iputils/ping.8	Fri Jan 12 00:13:17 2001
+@@ -1,6 +1,6 @@
+-.Dd January 7, 1999
++.Dd November 10, 2000
+ .Dt PING 8
+-.Os "iputils-ss990107"
++.Os "iputils-ss001110"
+ .Sh NAME
+ .Nm ping
+ .Nd send
+@@ -106,15 +106,18 @@
+ .It Fl Q Ar tos
+ Set Quality of Service -related bits in ICMP datagrams.  
+ .Ar tos
+-can be either decimal or hex number.  The bits are: 0 for reserved
+-(currently being redefined as congestion control), 1-4 for Type of Service
+-and 5-7 for Precendence. 
++can be either decimal or hex number.  Traditionally (RFC1349), these have been
++interpreted as: 0 for reserved (currently being redefined as congestion control), 
++1-4 for Type of Service and 5-7 for Precendence. 
+ Possible settings for Type of Service are: minimal cost: 0x02, 
+ reliability: 0x04, throughput: 0x08, low delay: 0x10.  Multiple TOS bits
+ should not be set simultaneously.  Possible settings for
+ special Precedence range from priority (0x20) to net control (0xe0).  You
+-must be root (CAP_NET_ADMIN capability) to use Critical or higher precendence value.  You cannot set
+-bit 0x01 (reserved) unless ECN has been enabled in the kernel.
++must be root (CAP_NET_ADMIN capability) to use Critical or higher precendence value.  
++You cannot set bit 0x01 (reserved) unless ECN has been enabled in the kernel.
++In RFC2474, these fields has been redefined as 8-bit Differentiated 
++Services (DS), consisting of: bits 0-1 of separate data (ECN will be used, here),
++and bits 2-7 of Differentiated Services Codepoint (DSCP).
+ .It Fl q
+ Quiet output.
+ Nothing is displayed except the summary lines at startup time and
+diff -uNr iputils/ping.c iputils.fix/ping.c
+--- iputils.orig/ping.c	Thu Nov  2 21:53:23 2000
++++ iputils/ping.c	Fri Jan 12 00:09:14 2001
+@@ -329,7 +329,7 @@
+ 			if (settos &&
+ 			    (setsockopt(icmp_sock, IPPROTO_IP, IP_TOS,
+ 					(char *)&settos, sizeof(int)) < 0)) {
+-				perror("ping: error setting QOS sockopts.\n");
++				perror("ping: error setting QOS sockopts.");
+ 				exit(2);
+ 			}
+ 			break;
+@@ -502,7 +502,7 @@
+ 
+ 		if (settos &&
+ 		    setsockopt(probe_fd, IPPROTO_IP, IP_TOS, (char *)&settos, sizeof(int)) < 0)
+-			perror("Warning: error setting QOS sockopts.\n");
++			perror("Warning: error setting QOS sockopts.");
+ 
+ 		dst.sin_port = htons(1025);
+ 		if (nroute)
+@@ -1665,7 +1665,9 @@
+ 	}
+ }
+ 
+-/* Set Type of Service (TOS) and other Quality of Service relating bits */
++/* Set Type of Service (TOS) / Differentiated Services (DS) and other 
++ * Quality of Service relating bits
++ */
+ int parsetos(char *str)
+ {
+         const char *cp;
+@@ -1686,7 +1688,7 @@
+         }
+ 
+         if (tos > TOS_MAX) {
+-        	fprintf(stderr, "ping: the decimal value of TOS bits must be 2-254 (or zero)\n");
++        	fprintf(stderr, "ping: the decimal value of TOS bits must be 0-255\n");
+         	exit(2);
+         }
+ 	return(tos);
