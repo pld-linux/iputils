@@ -1,23 +1,29 @@
---- iputils/ping_common.c.old	Thu Mar 14 16:58:47 2002
-+++ iputils/ping_common.c	Thu Mar 14 17:10:54 2002
-@@ -39,11 +39,11 @@
+diff -Nru iputils.orig/ping_common.c iputils/ping_common.c
+--- iputils.orig/ping_common.c	Fri Sep 20 18:02:32 2002
++++ iputils/ping_common.c	Wed Jan 22 14:53:48 2003
+@@ -39,16 +39,16 @@
  int working_recverr;
  
  /* timing */
 -int timing;			/* flag to do timing */
 -long tmin = LONG_MAX;		/* minimum round trip time */
 -long tmax;			/* maximum round trip time */
--long long tsum;			/* sum of all times, for doing average */
--long long tsum2;
 +unsigned long long timing;			/* flag to do timing */
 +unsigned long long tmin = LONG_MAX;		/* minimum round trip time */
 +unsigned long long tmax;			/* maximum round trip time */
+ /* Message for rpm maintainers: have _shame_. If you want
+  * to fix something send the patch to me for sanity checking.
+  * "sparcfix" patch is a complete non-sense, apparenly the person
+  * prepared it was stoned.
+  */
+-long long tsum;			/* sum of all times, for doing average */
+-long long tsum2;
 +unsigned long long tsum;			/* sum of all times, for doing average */
 +unsigned long long tsum2;
  int  pipesize = -1;
  
  int datalen = DEFDATALEN;
-@@ -775,10 +775,10 @@
+@@ -809,10 +809,10 @@
  		tmdev = llsqrt(tsum2 - tsum * tsum);
  
  		printf("rtt min/avg/max/mdev = %ld.%03ld/%lu.%03ld/%ld.%03ld/%ld.%03ld ms",
@@ -31,7 +37,7 @@
  		       );
  	}
  	if (pipesize > 1)
-@@ -809,10 +809,10 @@
+@@ -843,10 +843,10 @@
  		tavg = tsum / (nreceived + nrepeats);
  
  		fprintf(stderr, ", min/avg/ewma/max = %ld.%03ld/%lu.%03ld/%d.%03d/%ld.%03ld ms",
@@ -44,9 +50,10 @@
  		       );
  	}
  	fprintf(stderr, "\n");
---- iputils/ping_common.h.old	Thu Mar 14 17:11:16 2002
-+++ iputils/ping_common.h	Thu Mar 14 17:12:19 2002
-@@ -106,11 +106,11 @@
+diff -Nru iputils.orig/ping_common.h iputils/ping_common.h
+--- iputils.orig/ping_common.h	Fri Sep 20 17:08:11 2002
++++ iputils/ping_common.h	Wed Jan 22 14:52:08 2003
+@@ -103,11 +103,11 @@
  
  
  /* timing */
