@@ -1,0 +1,116 @@
+diff -uNd iputils.orig/arping.c iputils/arping.c
+--- iputils.orig/arping.c	2001-10-06 00:42:47.000000000 +0200
++++ iputils/arping.c	2004-01-27 11:27:30.664542344 +0100
+@@ -9,6 +9,7 @@
+  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+  */
+ 
++#include <asm/byteorder.h>
+ #include <stdlib.h>
+ #include <sys/param.h>
+ #include <sys/socket.h>
+@@ -19,6 +20,8 @@
+ #include <sys/ioctl.h>
+ #include <linux/if.h>
+ #include <linux/if_arp.h>
++#include <linux/if_ether.h>
++#include <linux/if_packet.h>
+ #include <sys/uio.h>
+ 
+ #include <netdb.h>
+diff -uNd iputils.orig/clockdiff.c iputils/clockdiff.c
+--- iputils.orig/clockdiff.c	2002-02-23 01:10:59.000000000 +0100
++++ iputils/clockdiff.c	2004-01-27 11:22:55.422385512 +0100
+@@ -1,3 +1,4 @@
++#include <asm/byteorder.h>
+ #include <time.h>
+ #include <sys/types.h>
+ #include <sys/param.h>
+Wspólne podkatalogi: iputils.orig/doc i iputils/doc
+Wspólne podkatalogi: iputils.orig/include-glibc i iputils/include-glibc
+Wspólne podkatalogi: iputils.orig/libipsec i iputils/libipsec
+Wspólne podkatalogi: iputils.orig/Modules i iputils/Modules
+diff -uNd iputils.orig/ping_common.h iputils/ping_common.h
+--- iputils.orig/ping_common.h	2004-01-27 11:03:34.000000000 +0100
++++ iputils/ping_common.h	2004-01-27 11:22:29.051394512 +0100
+@@ -1,3 +1,4 @@
++#include <asm/byteorder.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+Wspólne podkatalogi: iputils.orig/racoon i iputils/racoon
+diff -uNd iputils.orig/rarpd.c iputils/rarpd.c
+--- iputils.orig/rarpd.c	2001-12-02 19:45:06.000000000 +0100
++++ iputils/rarpd.c	2004-01-27 11:28:45.313194024 +0100
+@@ -9,6 +9,7 @@
+  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+  */
+ 
++#include <asm/byteorder.h>
+ #include <stdio.h>
+ #include <syslog.h>
+ #include <dirent.h>
+@@ -26,6 +27,7 @@
+ #include <sys/signal.h>
+ #include <linux/if.h>
+ #include <linux/if_arp.h>
++#include <linux/if_ether.h>
+ #include <netinet/in.h>
+ #include <linux/if_packet.h>
+ #include <linux/filter.h>
+diff -uNd iputils.orig/rdisc.c iputils/rdisc.c
+--- iputils.orig/rdisc.c	2001-08-24 19:39:00.000000000 +0200
++++ iputils/rdisc.c	2004-01-27 11:23:29.389221768 +0100
+@@ -25,6 +25,7 @@
+  * 2550 Garcia Avenue
+  * Mountain View, California  94043
+  */
++#include <asm/byteorder.h>
+ #include <stdio.h>
+ #include <errno.h>
+ #include <signal.h>
+Wspólne podkatalogi: iputils.orig/setkey i iputils/setkey
+diff -uNd iputils.orig/tftpd.c iputils/tftpd.c
+--- iputils.orig/tftpd.c	2002-01-24 01:31:41.000000000 +0100
++++ iputils/tftpd.c	2004-01-27 11:27:59.908096648 +0100
+@@ -48,6 +48,7 @@
+  * This version includes many modifications by Jim Guyton <guyton@rand-unix>
+  */
+ 
++#include <asm/byteorder.h>
+ #include <sys/types.h>
+ #include <sys/ioctl.h>
+ #include <sys/stat.h>
+diff -uNd iputils.orig/tracepath6.c iputils/tracepath6.c
+--- iputils.orig/tracepath6.c	2001-09-02 04:03:46.000000000 +0200
++++ iputils/tracepath6.c	2004-01-27 11:29:03.889370016 +0100
+@@ -9,6 +9,7 @@
+  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+  */
+ 
++#include <asm/byteorder.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+diff -uNd iputils.orig/tracepath.c iputils/tracepath.c
+--- iputils.orig/tracepath.c	2002-11-09 05:54:46.000000000 +0100
++++ iputils/tracepath.c	2004-01-27 11:22:01.263618896 +0100
+@@ -9,6 +9,7 @@
+  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
+  */
+ 
++#include <asm/byteorder.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <unistd.h>
+diff -uNd iputils.orig/traceroute6.c iputils/traceroute6.c
+--- iputils.orig/traceroute6.c	2002-10-03 05:29:23.000000000 +0200
++++ iputils/traceroute6.c	2004-01-27 11:29:23.286421216 +0100
+@@ -230,6 +230,7 @@
+  *     Tue Dec 20 03:50:13 PST 1988
+  */
+ 
++#include <asm/byteorder.h>
+ #include <sys/param.h>
+ #include <sys/time.h>
+ #include <sys/socket.h>
