@@ -39,10 +39,10 @@ make OPT="$RPM_OPT_FLAGS" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/usr/sbin
+install -d $RPM_BUILD_ROOT%{_sbindir}
 
 install -s arping tracepath tracepath6 rdisc clockdiff \
-	$RPM_BUILD_ROOT/usr/sbin
+	$RPM_BUILD_ROOT%{_sbindir}
 	
 gzip -9nf README
 
@@ -59,9 +59,9 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%attr(0755,root,root) /usr/sbin/tracepath*
-%attr(0755,root,root) /usr/sbin/rdisc
-%attr(4755,root,root) /usr/sbin/arping
-%attr(4755,root,root) /usr/sbin/clockdiff
+%attr(0755,root,root) %{_sbindir}/tracepath*
+%attr(0755,root,root) %{_sbindir}/rdisc
+%attr(4755,root,root) %{_sbindir}/arping
+%attr(4755,root,root) %{_sbindir}/clockdiff
 
 %changelog
