@@ -1,5 +1,7 @@
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U©ytki przeznaczone dla pracy z sieci╠ IPv4/IPv6
+Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
+Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss011002
 Release:	3
@@ -9,7 +11,7 @@ Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
-Patch0:		iputils-no_cr_in_errors.patch
+Patch0:		%{name}-no_cr_in_errors.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -36,6 +38,16 @@ NarzЙdzia przeznaczone dla sieci IPv4/IPv6:
 - rdisc Klasyczny serwer router discovery,
 - tracepath/tracepath6 ╕ledzi drogЙ pakietСw do <przeznaczenia>
   wykorzystuj╠c MTU discovery.
+
+%description -l ru
+Пакет iputils содержит набор базовых сетевых утилит (ping, tracepath
+etc.) от Алексея Кузнецова. Он НЕ включает классический traceroute,
+который содержится в отдельном пакете.
+
+%description -l uk
+Пакет iputils м╕стить наб╕р базових мережевих утил╕т (ping, tracepath
+etc.) в╕д Олекс╕я Кузн╓цова. В╕н НЕ м╕стить класичного traceroute,
+який м╕ститься в окремому пакет╕.
 
 %package ping
 Summary:	IPv4 ping
