@@ -1,21 +1,6 @@
-On Fri, May 07, 1999 at 01:10:25PM +0200, Tomasz K³oczko wrote:
-> Tak czy owak przyda³oby siê mo¿e mieæ ju¿ w zasobach przynajmniej jakiego¶
-> speca je¶li nie gotowy pakiet :)
-> Da siê zrobiæ ?
-
-Szczerze mówi±c, to nie jestem dobry w specach wiêc niechêtnie.
-
-Ale mam jeszcze jedn± nowo¶æ, która mo¿e byæ przydatna. W pakiecie
-iputils Ku¼niecowa (ftp.icm.edu.pl/pub/Linux/iproute/) jest programik
-tracepath, który robi dok³adnie to samo co traceroute ale nie wymaga
-SUIDa. Oryginalna wersja nie umie resolvowaæ adresów IP mijanych hostów,
-wiêc naprawi³em ten feler i zainstalowa³em ten program na wszystkich
-swoich serwerach zamiast traceroute. Userzy siê nie skar¿± :) Poni¿ej
-patch (testowany na iputils-ss990417).
-
-diff -ruN iputils/tracepath.c iputils-new/tracepath.c
---- iputils/tracepath.c	Sat Dec 19 20:07:50 1998
-+++ iputils-new/tracepath.c	Fri Apr 30 18:40:27 1999
+diff -urN iputils.org/tracepath.c iputils/tracepath.c
+--- iputils.org/tracepath.c	Sat Oct 28 13:39:25 2000
++++ iputils/tracepath.c	Sat Oct 28 13:40:06 2000
 @@ -38,6 +38,7 @@
  int mtu = 65535;
  int hops_to = -1;
@@ -24,7 +9,7 @@ diff -ruN iputils/tracepath.c iputils-new/tracepath.c
  
  struct probehdr
  {
-@@ -129,14 +130,23 @@
+@@ -135,14 +136,23 @@
  		printf("%2d?: %-16s ", ttl, "[LOCALHOST]");
  	} else if (e->ee_origin == SO_EE_ORIGIN_ICMP) {
  		char abuf[128];
@@ -52,7 +37,7 @@ diff -ruN iputils/tracepath.c iputils-new/tracepath.c
  	}
  
  	if (rethops>=0) {
-@@ -246,8 +256,8 @@
+@@ -256,8 +266,8 @@
  	int ttl;
  	char *p;
  
@@ -63,7 +48,7 @@ diff -ruN iputils/tracepath.c iputils-new/tracepath.c
  		exit(-1);
  	}
  
-@@ -257,6 +267,10 @@
+@@ -267,6 +277,10 @@
  		exit(1);
  	}
  	target.sin_family = AF_INET;
@@ -74,6 +59,53 @@ diff -ruN iputils/tracepath.c iputils-new/tracepath.c
  	p = strchr(argv[1], '/');
  	if (p) {
  		*p = 0;
-
--- 
-Pawel Krawczyk, CETI internet, Krakow. http://www.ceti.pl/~kravietz/
+diff -urN iputils.org/tracepath6.c iputils/tracepath6.c
+--- iputils.org/tracepath6.c	Sat Oct 28 13:39:25 2000
++++ iputils/tracepath6.c	Sat Oct 28 13:51:00 2000
+@@ -29,6 +29,7 @@
+ int mtu = 128000;
+ int hops_to = -1;
+ int hops_from = -1;
++int no_resolve = 0;
+ int mapped;
+ 
+ struct probehdr
+@@ -127,14 +128,11 @@
+ 	else if (e->ee_origin == SO_EE_ORIGIN_ICMP6 ||
+ 		 e->ee_origin == SO_EE_ORIGIN_ICMP) {
+ 		char abuf[128];
+-		struct sockaddr_in6 *sin6 = (struct sockaddr_in6*)(e+1);
+-		struct sockaddr_in *sin = (struct sockaddr_in*)(e+1);
+-
+-		if (sin->sin_family == AF_INET6)
+-			inet_ntop(AF_INET6, &sin6->sin6_addr, abuf, sizeof(abuf));
+-		else
+-			inet_ntop(AF_INET, &sin->sin_addr, abuf, sizeof(abuf));
++		struct sock_extended_err *ss = (struct sock_extended_err*)(e+1);
+ 
++		getnameinfo((struct sockaddr *)ss, sizeof(struct sockaddr_in6),
++					abuf, sizeof(abuf), NULL, 0,
++					no_resolve ? NI_NUMERICHOST : 0);
+ 		printf("%-32s ", abuf);
+ 	}
+ 
+@@ -252,7 +250,7 @@
+ 	struct hostent *he;
+ 
+ 	if (argc < 2) {
+-		fprintf(stderr, "tracepath6 <address>[/<port>]\n");
++		fprintf(stderr, "tracepath6 [-n] <address>[/<port>]\n");
+ 		exit(-1);
+ 	}
+ 
+@@ -262,6 +260,10 @@
+ 		exit(1);
+ 	}
+ 	sin.sin6_family = AF_INET6;
++	if (!strcmp(argv[1], "-n")) {
++		no_resolve = 1;
++		argv++; argc--;
++	}
+ 	p = strchr(argv[1], '/');
+ 	if (p) {
+ 		*p = 0;

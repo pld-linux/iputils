@@ -1,0 +1,16 @@
+diff -urN iputils.org/arping.c iputils/arping.c
+--- iputils.org/arping.c	Sat Oct 28 13:39:25 2000
++++ iputils/arping.c	Sat Oct 28 13:39:38 2000
+@@ -17,8 +17,10 @@
+ #include <sys/time.h>
+ #include <sys/signal.h>
+ #include <sys/ioctl.h>
+-#include <linux/if.h>
+-#include <linux/if_arp.h>
++#include <net/if.h>
++#include <net/if_arp.h>
++#include <netpacket/packet.h>
++#include <linux/if_ether.h>
+ #include <sys/uio.h>
+ 
+ #include <netdb.h>
