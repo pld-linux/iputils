@@ -1,6 +1,69 @@
-diff -uNd iputils.orig/arping.c iputils/arping.c
---- iputils.orig/arping.c	2001-10-06 00:42:47.000000000 +0200
-+++ iputils/arping.c	2004-01-27 11:27:30.664542344 +0100
+diff -urN iputils.orig/Makefile iputils/Makefile
+--- iputils.orig/Makefile	2004-05-02 20:30:43.000000000 +0000
++++ iputils/Makefile	2004-05-02 20:30:48.000000000 +0000
+@@ -1,5 +1,4 @@
+ # Path to parent kernel include files directory
+-KERNEL_INCLUDE=/usr/src/linux/include
+ LIBC_INCLUDE=/usr/include
+ 
+ DEFINES= 
+@@ -8,21 +7,6 @@
+ LDLIBS=-lresolv
+ ADDLIB=
+ 
+-ifeq ($(LIBC_INCLUDE)/socketbits.h,$(wildcard $(LIBC_INCLUDE)/socketbits.h))
+-  ifeq ($(LIBC_INCLUDE)/net/if_packet.h,$(wildcard $(LIBC_INCLUDE)/net/if_packet.h))
+-    GLIBCFIX=-Iinclude-glibc -include include-glibc/glibc-bugs.h
+-  endif
+-endif
+-ifeq ($(LIBC_INCLUDE)/bits/socket.h,$(wildcard $(LIBC_INCLUDE)/bits/socket.h))
+-  GLIBCFIX=-Iinclude-glibc -include include-glibc/glibc-bugs.h
+-endif
+-
+-ifeq ($(KERNEL_INCLUDE)/linux/pfkeyv2.h,$(wildcard $(KERNEL_INCLUDE)/linux/pfkeyv2.h))
+-  SUBDIRS=libipsec setkey
+-  LDLIBS+=-Llibipsec -lipsec
+-  IPSECDEF=-DDO_IPSEC -Ilibipsec
+-endif
+-
+ 
+ #options if you compile with libc5, and without a bind>=4.9.4 libresolv
+ # NOT AVAILABLE. Please, use libresolv.
+@@ -31,13 +15,13 @@
+ # What a pity, all new gccs are buggy and -Werror does not work. Sigh.
+ #CCOPT=-D_GNU_SOURCE -O2 -Wstrict-prototypes -Wall -g -Werror
+ CCOPT=-D_GNU_SOURCE -O2 -Wstrict-prototypes -Wall -g
+-CFLAGS=$(CCOPT) $(GLIBCFIX) -I$(KERNEL_INCLUDE) -I../include $(IPSECDEF) $(DEFINES) 
++CFLAGS=$(CCOPT) -I../include $(IPSECDEF) $(DEFINES) 
+ 
+ IPV4_TARGETS=tracepath ping clockdiff rdisc arping tftpd rarpd
+ IPV6_TARGETS=tracepath6 traceroute6 ping6
+ TARGETS=$(IPV4_TARGETS) $(IPV6_TARGETS)
+ 
+-all: check-kernel subdirs $(TARGETS)
++all: subdirs $(TARGETS)
+ 
+ 
+ tftpd: tftpd.o tftpsubs.o
+@@ -51,15 +35,6 @@
+ rdisc_srv.o: rdisc.c
+ 	$(CC) $(CFLAGS) -DRDISC_SERVER -o rdisc_srv.o rdisc.c
+ 
+-check-kernel:
+-ifeq ($(KERNEL_INCLUDE),)
+-	@echo "Please, set correct KERNEL_INCLUDE"; false
+-else
+-	@set -e; \
+-	if [ ! -r $(KERNEL_INCLUDE)/linux/autoconf.h ]; then \
+-		echo "Please, set correct KERNEL_INCLUDE"; false; fi
+-endif
+-
+ subdirs:
+ ifneq ($(SUBDIRS),)
+ 	@set -e; \
+diff -urN iputils.orig/arping.c iputils/arping.c
+--- iputils.orig/arping.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/arping.c	2004-05-02 20:32:38.000000000 +0000
 @@ -9,6 +9,7 @@
   * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
   */
@@ -18,30 +81,37 @@ diff -uNd iputils.orig/arping.c iputils/arping.c
  #include <sys/uio.h>
  
  #include <netdb.h>
-diff -uNd iputils.orig/clockdiff.c iputils/clockdiff.c
---- iputils.orig/clockdiff.c	2002-02-23 01:10:59.000000000 +0100
-+++ iputils/clockdiff.c	2004-01-27 11:22:55.422385512 +0100
+diff -urN iputils.orig/clockdiff.c iputils/clockdiff.c
+--- iputils.orig/clockdiff.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/clockdiff.c	2004-05-02 20:30:48.000000000 +0000
 @@ -1,3 +1,4 @@
 +#include <asm/byteorder.h>
  #include <time.h>
  #include <sys/types.h>
  #include <sys/param.h>
-Wspólne podkatalogi: iputils.orig/doc i iputils/doc
-Wspólne podkatalogi: iputils.orig/include-glibc i iputils/include-glibc
-Wspólne podkatalogi: iputils.orig/libipsec i iputils/libipsec
-Wspólne podkatalogi: iputils.orig/Modules i iputils/Modules
-diff -uNd iputils.orig/ping_common.h iputils/ping_common.h
---- iputils.orig/ping_common.h	2004-01-27 11:03:34.000000000 +0100
-+++ iputils/ping_common.h	2004-01-27 11:22:29.051394512 +0100
+diff -urN iputils.orig/ping.c iputils/ping.c
+--- iputils.orig/ping.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/ping.c	2004-05-02 20:31:03.000000000 +0000
+@@ -61,7 +61,7 @@
+ #include "ping_common.h"
+ 
+ #include <netinet/ip.h>
+-#include <netinet/ip_icmp.h>
++#include <linux/icmp.h>
+ #ifdef DO_IPSEC
+ #include <libipsec.h>
+ #endif
+diff -urN iputils.orig/ping_common.h iputils/ping_common.h
+--- iputils.orig/ping_common.h	2004-05-02 20:30:43.000000000 +0000
++++ iputils/ping_common.h	2004-05-02 20:30:48.000000000 +0000
 @@ -1,3 +1,4 @@
 +#include <asm/byteorder.h>
  #include <stdio.h>
  #include <stdlib.h>
  #include <unistd.h>
-Wspólne podkatalogi: iputils.orig/racoon i iputils/racoon
-diff -uNd iputils.orig/rarpd.c iputils/rarpd.c
---- iputils.orig/rarpd.c	2001-12-02 19:45:06.000000000 +0100
-+++ iputils/rarpd.c	2004-01-27 11:28:45.313194024 +0100
+diff -urN iputils.orig/rarpd.c iputils/rarpd.c
+--- iputils.orig/rarpd.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/rarpd.c	2004-05-02 20:33:07.000000000 +0000
 @@ -9,6 +9,7 @@
   * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
   */
@@ -58,9 +128,74 @@ diff -uNd iputils.orig/rarpd.c iputils/rarpd.c
  #include <netinet/in.h>
  #include <linux/if_packet.h>
  #include <linux/filter.h>
-diff -uNd iputils.orig/rdisc.c iputils/rdisc.c
---- iputils.orig/rdisc.c	2001-08-24 19:39:00.000000000 +0200
-+++ iputils/rdisc.c	2004-01-27 11:23:29.389221768 +0100
+@@ -52,12 +54,12 @@
+ 	int		hatype;
+ 	unsigned char	lladdr[16];
+ 	unsigned char	name[IFNAMSIZ];
+-	struct ifaddr 	*ifa_list;
++	struct l_ifaddr 	*ifa_list;
+ } *ifl_list;
+ 
+-struct ifaddr
++struct l_ifaddr
+ {
+-	struct ifaddr 	*next;
++	struct l_ifaddr 	*next;
+ 	__u32		prefix;
+ 	__u32		mask;
+ 	__u32		local;
+@@ -89,7 +91,7 @@
+ 	int fd;
+ 	struct ifreq *ifrp, *ifend;
+ 	struct iflink *ifl;
+-	struct ifaddr *ifa;
++	struct l_ifaddr *ifa;
+ 	struct ifconf ifc;
+ 	struct ifreq ibuf[256];
+ 
+@@ -180,7 +182,7 @@
+ 		if (ifa == NULL) {
+ 			if (mask == 0 || prefix == 0)
+ 				continue;
+-			ifa = (struct ifaddr*)malloc(sizeof(*ifa));
++			ifa = (struct l_ifaddr*)malloc(sizeof(*ifa));
+ 			memset(ifa, 0, sizeof(*ifa));
+ 			ifa->local = addr;
+ 			ifa->prefix = prefix;
+@@ -236,10 +238,10 @@
+ 	return dent != NULL;
+ }
+ 
+-struct ifaddr *select_ipaddr(int ifindex, __u32 *sel_addr, __u32 **alist)
++struct l_ifaddr *select_ipaddr(int ifindex, __u32 *sel_addr, __u32 **alist)
+ {
+ 	struct iflink *ifl;
+-	struct ifaddr *ifa;
++	struct l_ifaddr *ifa;
+ 	int retry = 0;
+ 	int i;
+ 
+@@ -295,7 +297,7 @@
+ 
+ 	if (r == NULL) {
+ 		if (hatype == ARPHRD_ETHER && halen == 6) {
+-			struct ifaddr *ifa;
++			struct l_ifaddr *ifa;
+ 			struct hostent *hp;
+ 			char ename[256];
+ 			static struct rarp_map emap = {
+@@ -364,7 +366,7 @@
+ {
+ 	__u32 laddr = 0;
+ 	struct iflink *ifl;
+-	struct ifaddr *ifa;
++	struct l_ifaddr *ifa;
+ 
+ 	for (ifl=ifl_list; ifl; ifl = ifl->next)
+ 		if (ifl->index == ifindex)
+diff -urN iputils.orig/rdisc.c iputils/rdisc.c
+--- iputils.orig/rdisc.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/rdisc.c	2004-05-02 20:30:48.000000000 +0000
 @@ -25,6 +25,7 @@
   * 2550 Garcia Avenue
   * Mountain View, California  94043
@@ -69,10 +204,9 @@ diff -uNd iputils.orig/rdisc.c iputils/rdisc.c
  #include <stdio.h>
  #include <errno.h>
  #include <signal.h>
-Wspólne podkatalogi: iputils.orig/setkey i iputils/setkey
-diff -uNd iputils.orig/tftpd.c iputils/tftpd.c
---- iputils.orig/tftpd.c	2002-01-24 01:31:41.000000000 +0100
-+++ iputils/tftpd.c	2004-01-27 11:27:59.908096648 +0100
+diff -urN iputils.orig/tftpd.c iputils/tftpd.c
+--- iputils.orig/tftpd.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/tftpd.c	2004-05-02 20:30:48.000000000 +0000
 @@ -48,6 +48,7 @@
   * This version includes many modifications by Jim Guyton <guyton@rand-unix>
   */
@@ -81,9 +215,9 @@ diff -uNd iputils.orig/tftpd.c iputils/tftpd.c
  #include <sys/types.h>
  #include <sys/ioctl.h>
  #include <sys/stat.h>
-diff -uNd iputils.orig/tracepath6.c iputils/tracepath6.c
---- iputils.orig/tracepath6.c	2001-09-02 04:03:46.000000000 +0200
-+++ iputils/tracepath6.c	2004-01-27 11:29:03.889370016 +0100
+diff -urN iputils.orig/tracepath.c iputils/tracepath.c
+--- iputils.orig/tracepath.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/tracepath.c	2004-05-02 20:30:48.000000000 +0000
 @@ -9,6 +9,7 @@
   * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
   */
@@ -92,20 +226,9 @@ diff -uNd iputils.orig/tracepath6.c iputils/tracepath6.c
  #include <stdio.h>
  #include <stdlib.h>
  #include <unistd.h>
-diff -uNd iputils.orig/tracepath.c iputils/tracepath.c
---- iputils.orig/tracepath.c	2002-11-09 05:54:46.000000000 +0100
-+++ iputils/tracepath.c	2004-01-27 11:22:01.263618896 +0100
-@@ -9,6 +9,7 @@
-  * Authors:	Alexey Kuznetsov, <kuznet@ms2.inr.ac.ru>
-  */
- 
-+#include <asm/byteorder.h>
- #include <stdio.h>
- #include <stdlib.h>
- #include <unistd.h>
-diff -uNd iputils.orig/traceroute6.c iputils/traceroute6.c
---- iputils.orig/traceroute6.c	2002-10-03 05:29:23.000000000 +0200
-+++ iputils/traceroute6.c	2004-01-27 11:29:23.286421216 +0100
+diff -urN iputils.orig/traceroute6.c iputils/traceroute6.c
+--- iputils.orig/traceroute6.c	2004-05-02 20:30:43.000000000 +0000
++++ iputils/traceroute6.c	2004-05-02 20:30:48.000000000 +0000
 @@ -230,6 +230,7 @@
   *     Tue Dec 20 03:50:13 PST 1988
   */
