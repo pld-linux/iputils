@@ -102,8 +102,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES 
-%{!?_without_docs:%dir doc/*.html Modules}
+%doc RELNOTES Modules %{!?_without_docs: doc/*.html}
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
