@@ -1,6 +1,6 @@
 diff -urN iputils.org/arping.c iputils/arping.c
---- iputils.org/arping.c	Sat Oct 28 13:39:25 2000
-+++ iputils/arping.c	Sat Oct 28 13:39:38 2000
+--- iputils.org/arping.c	Tue Nov 14 18:36:51 2000
++++ iputils/arping.c	Tue Nov 14 18:57:08 2000
 @@ -17,8 +17,10 @@
  #include <sys/time.h>
  #include <sys/signal.h>
@@ -14,3 +14,14 @@ diff -urN iputils.org/arping.c iputils/arping.c
  #include <sys/uio.h>
  
  #include <netdb.h>
+diff -urN iputils.org/ping6.c iputils/ping6.c
+--- iputils.org/ping6.c	Tue Nov 14 18:36:51 2000
++++ iputils/ping6.c	Tue Nov 14 18:57:37 2000
+@@ -72,6 +72,7 @@
+ #include <string.h>
+ #include <sys/param.h>
+ #include <sys/socket.h>
++#include <linux/config.h>
+ #include <linux/sockios.h>
+ #include <sys/file.h>
+ #include <sys/time.h>
