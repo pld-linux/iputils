@@ -58,7 +58,7 @@ ping wykorzystuj±cy IPv4.
 %patch1 -p1
 
 %build
-%{__make} OPT="%{?debug:-O -g}%{!?debug:$RPM_OPT_FLAGS} -DHAVE_SIN6_SCOPEID=1" all
+%{__make} OPT="%{?debug:-O0 -g}%{!?debug:$RPM_OPT_FLAGS} -DHAVE_SIN6_SCOPEID=1" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
