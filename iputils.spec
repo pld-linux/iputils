@@ -3,7 +3,7 @@ Summary(pl):	U©ytki przeznaczone dla pracy z sieci╠ IPv4/IPv6
 Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
-Version:	ss020124
+Version:	ss020927
 Release:	1
 Epoch:		1
 License:	BSD
