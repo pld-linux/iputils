@@ -1,8 +1,9 @@
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
-Version:	ss991024
-Release:	2
+Version:	ss000121
+Release:	1
+Epoch:		1
 Group:		Networking/Admin
 Group(pl):	Sieciowe/Administracja
 Copyright:	GPL
