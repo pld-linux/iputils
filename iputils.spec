@@ -8,8 +8,6 @@ Release:	3
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
-Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -53,8 +51,6 @@ etc.) в╕д Олекс╕я Кузн╓цова. В╕н НЕ м╕стить класичного traceroute,
 Summary:	IPv4 ping
 Summary(pl):	ping wykorzystuj╠cy IPv4
 Group:		Networking/Admin
-Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administracyjne
 
 %description ping
 IPv4 ping.
