@@ -9,7 +9,6 @@ Copyright:	GPL
 Source0:	ftp://ftp.inr.ac.ru:/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		iputils-resolv.patch
 Patch1:		iputils-opt.patch
-#Patch2:		iputils-egcs.patch
 BuildRoot:	/tmp/%{name}-%{version}-root
 Obsoletes:	traceroute
 
@@ -60,25 +59,21 @@ ping wykorzystuj±cy IPv4
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
-#%patch2 -p1
 
 %build
 make OPT="$RPM_OPT_FLAGS" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT%{_sbindir}
-install -d $RPM_BUILD_ROOT%{_mandir}/man8
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
 
 install -s arping clockdiff ping ping6 rdisc tracepath tracepath6 traceroute6 \
 	   $RPM_BUILD_ROOT%{_sbindir}
 
 mv in.rdisc.8c rdisc.8
 install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
-
 	
 gzip -9nf README $RPM_BUILD_ROOT%{_mandir}/man8/*
-
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -95,7 +90,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(644,root,root)  %{_mandir}/man8/clockdiff.8.gz
 %attr(644,root,root)  %{_mandir}/man8/rdisc.8.gz
 %attr(644,root,root)  %{_mandir}/man8/tracepath.8.gz
-
 
 %files ping
 %defattr(644,root,root,755)
