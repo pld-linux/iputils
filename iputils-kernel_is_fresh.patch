@@ -1,0 +1,10 @@
+--- iputils/ping.c~	Thu Mar 14 19:28:32 2002
++++ iputils/ping.c	Thu Mar 14 19:28:32 2002
+@@ -723,7 +723,6 @@
+ 					} else {
+ 						static int once;
+ 						if (!once) {
+-							fprintf(stderr, "\rWARNING: kernel is not very fresh, upgrade is recommended.\n");
+ 							once = 1;
+ 						}
+ 					}
