@@ -9,6 +9,7 @@ Epoch:		1
 License:	BSD
 Group:		Networking/Admin
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
+# Source0-md5: b5493f7a2997130a4f86c486c9993b86
 Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
