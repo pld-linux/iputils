@@ -71,10 +71,10 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(0755,root,root) %{_sbindir}/tracepat*
-%attr(4754,root,adm) %{_sbindir}/traceroute6
+%attr(4750,root,adm) %{_sbindir}/traceroute6
 %attr(0755,root,root) %{_sbindir}/rdisc
-%attr(4754,root,adm) %{_sbindir}/arping
-%attr(4754,root,adm) %{_sbindir}/clockdiff
+%attr(4750,root,adm) %{_sbindir}/arping
+%attr(4750,root,adm) %{_sbindir}/clockdiff
 %{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
@@ -82,5 +82,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) %{_sbindir}/ping*
+%attr(4750,root,adm) %{_sbindir}/ping*
 %{_mandir}/man8/ping.8*
