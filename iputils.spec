@@ -12,6 +12,8 @@ Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-kernel_is_fresh.patch
 Patch2:		%{name}-ping_sparcfix.patch
+BuildRequires:	docbook-dtd31-sgml
+BuildRequires:	docbook-utils >= 0.6.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -67,7 +69,11 @@ ping wykorzystuj±cy IPv4.
 %patch2 -p1
 
 %build
-%{__make} CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" all
+# empty LDLIBS - don't link with -lresolv, it's not necessary
+%{__make} all \
+	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
+	LDLIBS=""
+
 %{__make} html man
 
 %install
@@ -81,6 +87,7 @@ install ping ping6 $RPM_BUILD_ROOT/bin
 
 #mv -f in.rdisc.8c rdisc.8
 install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -95,7 +102,8 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
-%{_mandir}/man8/tracepath.8*
+%{_mandir}/man8/tracepath*.8*
+%{_mandir}/man8/traceroute6.8*
 
 %files ping
 %defattr(644,root,root,755)
