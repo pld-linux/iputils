@@ -4,7 +4,7 @@ Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss011002
-Release:	4
+Release:	5
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -69,10 +69,12 @@ ping wykorzystuj╠cy IPv4.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin}
 
-install arping clockdiff ping ping6 rdisc tracepath tracepath6 traceroute6 \
+install arping clockdiff rdisc tracepath tracepath6 traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
+
+install ping ping6 $RPM_BUILD_ROOT/bin
 
 mv -f in.rdisc.8c rdisc.8
 install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -94,5 +96,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) %{_sbindir}/ping*
+%attr(4754,root,adm) /bin/ping*
 %{_mandir}/man8/ping.8*
