@@ -1,0 +1,2 @@
+- changed %{!?debug:...}%{?debug...} to %{?debug:...}%{!?debug...}
+  (now it's more C like)
