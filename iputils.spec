@@ -83,7 +83,7 @@ ping wykorzystuj±cy IPv4.
 	LDLIBS=""
 
 %{!?_without_docs:	%{__make} html}
-%{!?_without_docs:	%{__make} man}
+%{__make} man
 
 %install
 rm -rf $RPM_BUILD_ROOT
