@@ -1,20 +1,20 @@
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U©ytki przeznaczone dla pracy z sieci╠ IPv4/IPv6
+Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
+Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
-Version:	ss001110
-Release:	3
+Version:	ss020124
+Release:	1
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
-Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
-Patch0:		%{name}-opt.patch
-Patch1:		%{name}-glibc.patch
-Patch2:		%{name}-bug23844.patch
-Patch3:		%{name}-ping-deadline.patch
+Patch0:		%{name}-no_cr_in_errors.patch
+Patch1:		%{name}-ping_sparcfix.patch
+BuildRequires:	docbook-dtd30-sgml
+BuildRequires:	docbook-dtd31-sgml
+BuildRequires:	docbook-utils >= 0.6.10
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
-Obsoletes:	traceroute
 
 %description
 IPv4/IPv6 networking utils:
@@ -41,55 +41,71 @@ NarzЙdzia przeznaczone dla sieci IPv4/IPv6:
 - tracepath/tracepath6 ╕ledzi drogЙ pakietСw do <przeznaczenia>
   wykorzystuj╠c MTU discovery.
 
+%description -l ru
+Пакет iputils содержит набор базовых сетевых утилит (ping, tracepath
+etc.) от Алексея Кузнецова. Он НЕ включает классический traceroute,
+который содержится в отдельном пакете.
+
+%description -l uk
+Пакет iputils м╕стить наб╕р базових мережевих утил╕т (ping, tracepath
+etc.) в╕д Олекс╕я Кузн╓цова. В╕н НЕ м╕стить класичного traceroute,
+який м╕ститься в окремому пакет╕.
+
 %package ping
 Summary:	IPv4 ping
 Summary(pl):	ping wykorzystuj╠cy IPv4
 Group:		Networking/Admin
-Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administracyjne
 
 %description ping
 IPv4 ping.
 
-%description -l pl
+%description ping -l pl
 ping wykorzystuj╠cy IPv4.
 
 %prep
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
-%{__make} OPT="%{rpmcflags} -DHAVE_SIN6_SCOPEID=1" all
+# empty LDLIBS - don't link with -lresolv, it's not necessary
+%{__make} all \
+	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
+	LDLIBS=""
+
+%{__make} html man
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin}
 
-install arping clockdiff ping ping6 rdisc tracepath tracepath6 traceroute6 \
+install arping clockdiff rdisc tracepath tracepath6 traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
 
-mv -f in.rdisc.8c rdisc.8
-install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
+install ping ping6 $RPM_BUILD_ROOT/bin
+
+install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
+%doc RELNOTES doc/*.html Modules
 %attr(0755,root,root) %{_sbindir}/tracepat*
-%attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(0755,root,root) %{_sbindir}/rdisc
+%attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(4754,root,adm) %{_sbindir}/arping
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
-%{_mandir}/man8/tracepath.8*
+%{_mandir}/man8/tracepath*.8*
+%{_mandir}/man8/traceroute6.8*
+%{_mandir}/man8/pg3.8*
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) %{_sbindir}/ping*
+%attr(4754,root,adm) /bin/ping*
 %{_mandir}/man8/ping.8*
