@@ -1,7 +1,7 @@
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
-Version:	ss990610
+Version:	ss990824
 Release:	1
 Group:		Networking/Admin
 Group(pl):	Sieciowe/Administracja
@@ -9,7 +9,7 @@ Copyright:	GPL
 Source0:	ftp://ftp.inr.ac.ru:/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		iputils-resolv.patch
 Patch1:		iputils-opt.patch
-Patch2:		iputils-egcs.patch
+#Patch2:		iputils-egcs.patch
 BuildRoot:	/tmp/%{name}-%{version}-root
 Obsoletes:	traceroute
 
@@ -60,7 +60,7 @@ ping wykorzystuj±cy IPv4
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
+#%patch2 -p1
 
 %build
 make OPT="$RPM_OPT_FLAGS" all
