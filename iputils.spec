@@ -1,26 +1,30 @@
-#  
-# Conditional build
-# _without_docs	- don't build documentation
 #
+# Conditional build
+%bcond_without	docs	# don't build documentation
+
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Summary(ru):	îÁÂÏÒ ÂÁÚÏ×ÙÈ ÓÅÔÅ×ÙÈ ÕÔÉÌÉÔ (ping, tracepath etc.)
 Summary(uk):	îÁÂ¦Ò ÂÁÚÏ×ÉÈ ÍÅÒÅÖÅ×ÉÈ ÕÔÉÌ¦Ô (ping, tracepath etc.)
 Name:		iputils
-Version:	ss020927
+Version:	ss021109
 Release:	1
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
-Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
-# Source0-md5: b5493f7a2997130a4f86c486c9993b86
-Patch0:		%{name}-no_cr_in_errors.patch
+Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}-try.tar.bz2
+# Source0-md5:	dd10ef3d76480990a2174d2bb0daddaf
+Patch0:		%{name}-ping6-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
-Patch3:		%{name}-20001007-rh7.patch
-%{!?_without_docs:BuildRequires:	docbook-dtd30-sgml}
-%{!?_without_docs:BuildRequires:	docbook-dtd31-sgml}
-%{!?_without_docs:BuildRequires:	docbook-utils >= 0.6.10}
+Patch3:		%{name}-Makefile.patch
+Patch4:		%{name}-gkh.patch
+BuildRequires:	glibc-kernel-headers >= 7:2.6.1.1-1
+%if %{with docs}
+BuildRequires:	docbook-dtd30-sgml
+BuildRequires:	docbook-dtd31-sgml
+BuildRequires:	docbook-utils >= 0.6.10
+%endif
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -71,10 +75,11 @@ ping wykorzystuj±cy IPv4.
 
 %prep
 %setup  -q -n %{name}
-%patch0 -p1
+%patch0 -p0
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
+%patch3 -p0
+%patch4 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
@@ -82,7 +87,7 @@ ping wykorzystuj±cy IPv4.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
-%{!?_without_docs:	%{__make} html}
+%{?with_docs:	%{__make} html}
 %{__make} man
 
 %install
@@ -102,7 +107,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES Modules %{!?_without_docs: doc/*.html}
+%doc RELNOTES %{?with_docs: doc/*.html}
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
@@ -113,7 +118,6 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath*.8*
 %{_mandir}/man8/traceroute6.8*
-%{_mandir}/man8/pg3.8*
 
 %files ping
 %defattr(644,root,root,755)
