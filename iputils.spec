@@ -10,6 +10,7 @@ License:	BSD
 Group:		Networking/Admin
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
+Patch1:		%{name}-kernel_is_fresh.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -61,6 +62,7 @@ ping wykorzystuj±cy IPv4.
 %prep
 %setup  -q -n %{name}
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" all
