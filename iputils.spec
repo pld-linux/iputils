@@ -44,10 +44,10 @@ Group:		Networking/Admin
 Group(pl):	Sieciowe/Administracyjne
 
 %description ping
-IPv4 ping
+IPv4 ping.
 
 %description -l pl
-ping wykorzystuj±cy IPv4
+ping wykorzystuj±cy IPv4.
 
 %prep
 %setup  -q -n %{name}
