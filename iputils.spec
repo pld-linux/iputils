@@ -2,11 +2,11 @@ Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
 Version:	ss991024
-Release:	1
+Release:	2
 Group:		Networking/Admin
 Group(pl):	Sieciowe/Administracja
 Copyright:	GPL
-Source0:	ftp://ftp.inr.ac.ru:/ip-routing/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		iputils-resolv.patch
 Patch1:		iputils-opt.patch
 BuildRoot:	/tmp/%{name}-%{version}-root
@@ -81,17 +81,17 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %attr(0755,root,root) %{_sbindir}/tracepat*
-%attr(4750,root,icmp) %{_sbindir}/traceroute6
+%attr(4754,root,root) %{_sbindir}/traceroute6
 %attr(0755,root,root) %{_sbindir}/rdisc
-%attr(4750,root,icmp) %{_sbindir}/arping
-%attr(4750,root,icmp) %{_sbindir}/clockdiff
-%attr(4750,root,icmp) %{_sbindir}/ping6
-%attr(644,root,root)  %{_mandir}/man8/arping.8.gz
-%attr(644,root,root)  %{_mandir}/man8/clockdiff.8.gz
-%attr(644,root,root)  %{_mandir}/man8/rdisc.8.gz
-%attr(644,root,root)  %{_mandir}/man8/tracepath.8.gz
+%attr(4754,root,root) %{_sbindir}/arping
+%attr(4754,root,root) %{_sbindir}/clockdiff
+%attr(4754,root,root) %{_sbindir}/ping6
+%{_mandir}/man8/arping.8*
+%{_mandir}/man8/clockdiff.8*
+%{_mandir}/man8/rdisc.8*
+%{_mandir}/man8/tracepath.8*
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4755,root,icmp) %{_sbindir}/ping
-%attr(644,root,root)  %{_mandir}/man8/ping.8.gz
+%attr(4754,root,root) %{_sbindir}/ping
+%{_mandir}/man8/ping.8*
