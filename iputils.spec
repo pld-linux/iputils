@@ -56,7 +56,7 @@ ping wykorzystuj±cy IPv4.
 %patch1 -p1
 
 %build
-make OPT="$RPM_OPT_FLAGS" all
+%{__make} OPT="$RPM_OPT_FLAGS" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
