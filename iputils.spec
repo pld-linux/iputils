@@ -11,6 +11,7 @@ Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-resolv.patch
 Patch1:		%{name}-opt.patch
+Patch2:		%{name}-glibc.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	traceroute
 
@@ -56,6 +57,7 @@ ping wykorzystuj±cy IPv4.
 %setup  -q -n %{name}
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 %{__make} OPT="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" all
