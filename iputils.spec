@@ -2,7 +2,7 @@ Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
 Version:	ss011002
-Release:	2
+Release:	3
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -53,6 +53,7 @@ ping wykorzystuj±cy IPv4.
 %prep
 %setup  -q -n %{name}
 %patch0 -p1
+
 %build
 %{__make} CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" all
 
