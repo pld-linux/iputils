@@ -25,6 +25,7 @@ BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
 %endif
+Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -76,6 +77,21 @@ IPv4 ping.
 %description ping -l pl
 ping wykorzystuj±cy IPv4.
 
+%package arping
+Summary:	arping
+Summary(pl):	arping
+Group:		Networking/Admin
+Provides:	arping
+Obsoletes:	arping
+
+%description
+Ping <address> on device <interface> by ARP packets, using
+source address <source>.
+
+%description arping -l pl
+Pinguje <adres> na interfejsie <interfejs> wysy³aj±c pakiety
+ARP u¿ywaj±c ¼ród³owego adresu <¼ród³o>.
+
 %prep
 %setup  -q -n %{name}
 %patch0 -p0
@@ -114,9 +130,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
-%attr(4754,root,adm) %{_sbindir}/arping
 %attr(4754,root,adm) %{_sbindir}/clockdiff
-%{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath*.8*
@@ -126,3 +140,8 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %attr(4754,root,adm) /bin/ping*
 %{_mandir}/man8/ping.8*
+
+%files arping
+%defattr(644,root,root,755)
+%attr(4754,root,adm) %{_sbindir}/arping
+%{_mandir}/man8/arping.8*
