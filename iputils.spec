@@ -15,24 +15,25 @@ Obsoletes:	traceroute
 
 %description
 IPv4/IPv6 networking utils:
-- clockdiff Measures clock difference between us and <destination> with
-  1msec resolution. Without -o option it uses icmp timestamps, with -o it
-  uses icmp echo with timestamp IP option.
+- clockdiff Measures clock difference between us and <destination>
+  with 1msec resolution. Without -o option it uses icmp timestamps, with
+  -o it uses icmp echo with timestamp IP option.
 - ping/ping6
 - traceroute6
-- arping Ping <address> on device <interface> by ARP packets, using source
-  address <source>.
+- arping Ping <address> on device <interface> by ARP packets, using
+  source address <source>.
 - rdisc Classic router discovery daemon.
 - tracepath/tracepath6 It traces path to <destination> discovering MTU
   along this path. It uses UDP port <port> or some random port.
 
 %description -l pl
 Narzêdzia przeznaczone dla sieci IPv4/IPv6:
-- clockdiff Sprawdza ró¿nicê czasu/daty pomiêdzy nami a innym komputerem z
-  rozdzielczo¶ci± 1ms.
+- clockdiff Sprawdza ró¿nicê czasu/daty pomiêdzy nami a innym
+  komputerem z rozdzielczo¶ci± 1ms.
 - ping/ping6
 - traceroute6
-- arping Pinguje <adres> na interfejsie <interfejs> wysy³aj±c pakiety ARP.
+- arping Pinguje <adres> na interfejsie <interfejs> wysy³aj±c pakiety
+  ARP.
 - rdisc Klasyczny serwer router discovery.
 - tracepath/tracepath6 ¦ledzi drogê pakietów do <przeznaczenia>
   wykorzystuj±c MTU discovery.
