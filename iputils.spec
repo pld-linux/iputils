@@ -13,6 +13,7 @@ Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
+Patch3:		%{name}-20001007-rh7.patch
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
@@ -69,6 +70,7 @@ ping wykorzystuj±cy IPv4.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
