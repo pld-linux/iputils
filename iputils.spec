@@ -12,7 +12,7 @@ Copyright:	GPL
 Source0:	ftp://ftp.inr.ac.ru:/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		iputils-resolv.patch
 Patch1:		iputils-opt.patch
-BuildRoot:   	/tmp/%{name}-%{version}-root
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 -
