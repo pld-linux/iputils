@@ -1,0 +1,65 @@
+--- iputils/ping_common.c.old	Thu Mar 14 16:58:47 2002
++++ iputils/ping_common.c	Thu Mar 14 17:10:54 2002
+@@ -39,11 +39,11 @@
+ int working_recverr;
+ 
+ /* timing */
+-int timing;			/* flag to do timing */
+-long tmin = LONG_MAX;		/* minimum round trip time */
+-long tmax;			/* maximum round trip time */
+-long long tsum;			/* sum of all times, for doing average */
+-long long tsum2;
++unsigned long long timing;			/* flag to do timing */
++unsigned long long tmin = LONG_MAX;		/* minimum round trip time */
++unsigned long long tmax;			/* maximum round trip time */
++unsigned long long tsum;			/* sum of all times, for doing average */
++unsigned long long tsum2;
+ int  pipesize = -1;
+ 
+ int datalen = DEFDATALEN;
+@@ -775,10 +775,10 @@
+ 		tmdev = llsqrt(tsum2 - tsum * tsum);
+ 
+ 		printf("rtt min/avg/max/mdev = %ld.%03ld/%lu.%03ld/%ld.%03ld/%ld.%03ld ms",
+-		       tmin/1000, tmin%1000,
++		       (long)tmin/1000, (long)tmin%1000,
+ 		       (unsigned long)(tsum/1000), (long)(tsum%1000),
+-		       tmax/1000, tmax%1000,
+-		       tmdev/1000, tmdev%1000
++		       (long)tmax/1000, (long)tmax%1000,
++		       (long)tmdev/1000, (long)tmdev%1000
+ 		       );
+ 	}
+ 	if (pipesize > 1)
+@@ -809,10 +809,10 @@
+ 		tavg = tsum / (nreceived + nrepeats);
+ 
+ 		fprintf(stderr, ", min/avg/ewma/max = %ld.%03ld/%lu.%03ld/%d.%03d/%ld.%03ld ms",
+-		       tmin/1000, tmin%1000,
++		       (long)tmin/1000, (long)tmin%1000,
+ 		       tavg/1000, tavg%1000,
+ 		       rtt/8000, (rtt/8)%1000,
+-		       tmax/1000, tmax%1000
++		       (long)tmax/1000, (long)tmax%1000
+ 		       );
+ 	}
+ 	fprintf(stderr, "\n");
+--- iputils/ping_common.h.old	Thu Mar 14 17:11:16 2002
++++ iputils/ping_common.h	Thu Mar 14 17:12:19 2002
+@@ -106,11 +106,11 @@
+ 
+ 
+ /* timing */
+-extern int timing;			/* flag to do timing */
+-extern long tmin;			/* minimum round trip time */
+-extern long tmax;			/* maximum round trip time */
+-extern long long tsum;			/* sum of all times, for doing average */
+-extern long long tsum2;
++extern unsigned long long timing;		/* flag to do timing */
++extern unsigned long long tmin;			/* minimum round trip time */
++extern unsigned long long tmax;			/* maximum round trip time */
++extern unsigned long long tsum;			/* sum of all times, for doing average */
++extern unsigned long long tsum2;
+ extern int rtt;
+ extern __u16 acked;
+ extern int pipesize;
