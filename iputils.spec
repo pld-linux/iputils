@@ -3,14 +3,15 @@ Summary(pl):	U©ytki przeznaczone dla pracy z sieci╠ IPv4/IPv6
 Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
-Version:	ss011002
-Release:	5
+Version:	ss020124
+Release:	0.1
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
 Patch0:		%{name}-no_cr_in_errors.patch
 Patch1:		%{name}-kernel_is_fresh.patch
+Patch2:		%{name}-ping_sparcfix.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -62,10 +63,12 @@ ping wykorzystuj╠cy IPv4.
 %prep
 %setup  -q -n %{name}
 %patch0 -p1
-%patch1 -p1
+#%patch1 -p1
+%patch2 -p1
 
 %build
 %{__make} CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" all
+%{__make} html man
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -76,8 +79,8 @@ install arping clockdiff rdisc tracepath tracepath6 traceroute6 \
 
 install ping ping6 $RPM_BUILD_ROOT/bin
 
-mv -f in.rdisc.8c rdisc.8
-install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
+#mv -f in.rdisc.8c rdisc.8
+install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
