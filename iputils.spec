@@ -1,7 +1,7 @@
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Name:		iputils
-Version:	ss000418
+Version:	ss001007
 Release:	1
 Epoch:		1
 License:	GPL
@@ -80,7 +80,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,root) %{_sbindir}/arping
 %attr(4754,root,root) %{_sbindir}/clockdiff
-%attr(4754,root,root) %{_sbindir}/ping6
 %{_mandir}/man8/arping.8*
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rdisc.8*
@@ -88,5 +87,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,root) %{_sbindir}/ping
+%attr(4755,root,root) %{_sbindir}/ping*
 %{_mandir}/man8/ping.8*
