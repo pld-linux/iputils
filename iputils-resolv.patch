@@ -1,0 +1,79 @@
+On Fri, May 07, 1999 at 01:10:25PM +0200, Tomasz K³oczko wrote:
+> Tak czy owak przyda³oby siê mo¿e mieæ ju¿ w zasobach przynajmniej jakiego¶
+> speca je¶li nie gotowy pakiet :)
+> Da siê zrobiæ ?
+
+Szczerze mówi±c, to nie jestem dobry w specach wiêc niechêtnie.
+
+Ale mam jeszcze jedn± nowo¶æ, która mo¿e byæ przydatna. W pakiecie
+iputils Ku¼niecowa (ftp.icm.edu.pl/pub/Linux/iproute/) jest programik
+tracepath, który robi dok³adnie to samo co traceroute ale nie wymaga
+SUIDa. Oryginalna wersja nie umie resolvowaæ adresów IP mijanych hostów,
+wiêc naprawi³em ten feler i zainstalowa³em ten program na wszystkich
+swoich serwerach zamiast traceroute. Userzy siê nie skar¿± :) Poni¿ej
+patch (testowany na iputils-ss990417).
+
+diff -ruN iputils/tracepath.c iputils-new/tracepath.c
+--- iputils/tracepath.c	Sat Dec 19 20:07:50 1998
++++ iputils-new/tracepath.c	Fri Apr 30 18:40:27 1999
+@@ -38,6 +38,7 @@
+ int mtu = 65535;
+ int hops_to = -1;
+ int hops_from = -1;
++int no_resolve = 0;
+ 
+ struct probehdr
+ {
+@@ -129,14 +130,23 @@
+ 		printf("%2d?: %-16s ", ttl, "[LOCALHOST]");
+ 	} else if (e->ee_origin == SO_EE_ORIGIN_ICMP) {
+ 		char abuf[128];
++		struct hostent *h;
+ 		struct sockaddr_in *sin = (struct sockaddr_in*)(e+1);
+ 
+ 		inet_ntop(AF_INET, &sin->sin_addr, abuf, sizeof(abuf));
+ 
+-		if (sndhops>0)
+-			printf("%2d:  %-16s ", sndhops, abuf);
+-		else
+-			printf("%2d?: %-16s ", ttl, abuf);
++		if(!no_resolve) {
++		h = gethostbyaddr((char *) &sin->sin_addr, sizeof(sin->sin_addr), AF_INET);
++			if (sndhops>0)
++				printf("%2d:  %-s  (%-s) ", sndhops, h ? h->h_name : abuf, abuf);
++			else
++				printf("%2d?: %-s  (%-s) ", ttl, h ? h->h_name : abuf, abuf);
++		} else {
++			if (sndhops>0)
++				printf("%2d: %-s ", sndhops, abuf);
++			else
++				printf("%2d?: %-s ", ttl, abuf);
++		} /* resolve */
+ 	}
+ 
+ 	if (rethops>=0) {
+@@ -246,8 +256,8 @@
+ 	int ttl;
+ 	char *p;
+ 
+-	if (argc != 2) {
+-		fprintf(stderr, "tracepath <destination>[/<port>]\n");
++	if (argc < 2) {
++		fprintf(stderr, "tracepath [-n] <destination>[/<port>]\n");
+ 		exit(-1);
+ 	}
+ 
+@@ -257,6 +267,10 @@
+ 		exit(1);
+ 	}
+ 	target.sin_family = AF_INET;
++	if (!strcmp(argv[1], "-n")) {
++		no_resolve = 1;
++		argv++; argc--;
++	}
+ 	p = strchr(argv[1], '/');
+ 	if (p) {
+ 		*p = 0;
+
+-- 
+Pawel Krawczyk, CETI internet, Krakow. http://www.ceti.pl/~kravietz/

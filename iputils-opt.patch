@@ -1,0 +1,12 @@
+--- iputils/Makefile.mk	Thu Apr 15 19:21:27 1999
++++ iputils/Makefile	Mon May 10 16:31:48 1999
+@@ -27,7 +27,8 @@
+ # NOT AVAILABLE. Please, use libresolv.
+ 
+ CC=gcc
+-CFLAGS=-O2 -Wall -g $(GLIBCFIX) -I$(KERNEL_INCLUDE) -I../include $(DEFINES) 
++OPT=-O2 -Wall -g
++CFLAGS=$(OPT) $(GLIBCFIX) -I$(KERNEL_INCLUDE) -I../include $(DEFINES) 
+ 
+ IPV4_TARGETS=tracepath ping clockdiff rdisc arping
+ IPV6_TARGETS=tracepath6 traceroute6 ping6
