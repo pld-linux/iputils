@@ -8,7 +8,7 @@ Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
-Release:	2
+Release:	2.9
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -66,6 +66,9 @@ etc.) в╕д Олекс╕я Кузн╓цова. В╕н НЕ м╕стить класичного traceroute,
 Summary:	IPv4 ping
 Summary(pl):	ping wykorzystuj╠cy IPv4
 Group:		Networking/Admin
+Provides:	ping
+Obsoletes:	inetutils-ping
+Obsoletes:	ping
 
 %description ping
 IPv4 ping.
