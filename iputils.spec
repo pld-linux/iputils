@@ -6,35 +6,36 @@ Release:	1
 Epoch:		1
 License:	GPL
 Group:		Networking/Admin
-Group(pl):	Sieciowe/Administracyjne
+Group(de):	Netzwerkwesen/Administration
+Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}.tar.gz
-Patch0:		iputils-resolv.patch
-Patch1:		iputils-opt.patch
+Patch0:		%{name}-resolv.patch
+Patch1:		%{name}-opt.patch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 Obsoletes:	traceroute
 
 %description
 IPv4/IPv6 networking utils:
 - clockdiff Measures clock difference between us and <destination>
-  with 1msec resolution. Without -o option it uses icmp timestamps, with
-  -o it uses icmp echo with timestamp IP option.
-- ping/ping6
-- traceroute6
+  with 1msec resolution. Without -o option it uses icmp timestamps,
+  with -o it uses icmp echo with timestamp IP option,
+- ping/ping6,
+- traceroute6,
 - arping Ping <address> on device <interface> by ARP packets, using
-  source address <source>.
-- rdisc Classic router discovery daemon.
+  source address <source>,
+- rdisc Classic router discovery daemon,
 - tracepath/tracepath6 It traces path to <destination> discovering MTU
   along this path. It uses UDP port <port> or some random port.
 
 %description -l pl
 Narzêdzia przeznaczone dla sieci IPv4/IPv6:
 - clockdiff Sprawdza ró¿nicê czasu/daty pomiêdzy nami a innym
-  komputerem z rozdzielczo¶ci± 1ms.
-- ping/ping6
-- traceroute6
+  komputerem z rozdzielczo¶ci± 1ms,
+- ping/ping6,
+- traceroute6,
 - arping Pinguje <adres> na interfejsie <interfejs> wysy³aj±c pakiety
-  ARP.
-- rdisc Klasyczny serwer router discovery.
+  ARP,
+- rdisc Klasyczny serwer router discovery,
 - tracepath/tracepath6 ¦ledzi drogê pakietów do <przeznaczenia>
   wykorzystuj±c MTU discovery.
 
@@ -42,7 +43,8 @@ Narzêdzia przeznaczone dla sieci IPv4/IPv6:
 Summary:	IPv4 ping
 Summary(pl):	ping wykorzystuj±cy IPv4
 Group:		Networking/Admin
-Group(pl):	Sieciowe/Administracyjne
+Group(de):	Netzwerkwesen/Administration
+Group(pl):	Sieciowe/Administacyjne
 
 %description ping
 IPv4 ping.
@@ -56,19 +58,17 @@ ping wykorzystuj±cy IPv4.
 %patch1 -p1
 
 %build
-%{__make} OPT="$RPM_OPT_FLAGS" all
+%{__make} OPT="%{!?debug:$RPM_OPT_FLAGS}%{?debug:-O -g}" all
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8}
 
-install -s arping clockdiff ping ping6 rdisc tracepath tracepath6 traceroute6 \
-	   $RPM_BUILD_ROOT%{_sbindir}
+install arping clockdiff ping ping6 rdisc tracepath tracepath6 traceroute6 \
+	$RPM_BUILD_ROOT%{_sbindir}
 
-mv in.rdisc.8c rdisc.8
-install *.8  $RPM_BUILD_ROOT%{_mandir}/man8
-	
-gzip -9nf README $RPM_BUILD_ROOT%{_mandir}/man8/*
+mv -f in.rdisc.8c rdisc.8
+install *.8 $RPM_BUILD_ROOT%{_mandir}/man8
 
 %clean
 rm -rf $RPM_BUILD_ROOT
