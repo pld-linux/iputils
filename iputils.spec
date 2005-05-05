@@ -1,7 +1,7 @@
 #
 # Conditional build
 %bcond_without	doc	# don't build documentation
-
+#
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl):	U¿ytki przeznaczone dla pracy z sieci± IPv4/IPv6
 Summary(ru):	îÁÂÏÒ ÂÁÚÏ×ÙÈ ÓÅÔÅ×ÙÈ ÕÔÉÌÉÔ (ping, tracepath etc.)
@@ -19,12 +19,12 @@ Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
 Patch3:		%{name}-gkh.patch
 Patch4:		%{name}-Makefile.patch
-BuildRequires:	linux-libc-headers
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
 %endif
+BuildRequires:	linux-libc-headers
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -106,7 +106,7 @@ ARP u¿ywaj±c ¼ród³owego adresu <¼ród³o>.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
-%{?with_doc:	%{__make} html}
+%{?with_doc:%{__make} html}
 %{__make} man
 
 %install
@@ -126,7 +126,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES %{?with_doc: doc/*.html}
+%doc RELNOTES %{?with_doc:doc/*.html}
 %attr(0755,root,root) %{_sbindir}/tracepat*
 %attr(0755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
