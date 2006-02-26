@@ -103,6 +103,7 @@ ARP u¿ywaj±c ¼ród³owego adresu <¼ród³o>.
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
 %{__make} all \
+	CC="%{__cc}"
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=""
 
