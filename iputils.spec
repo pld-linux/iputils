@@ -88,7 +88,7 @@ Group:		Networking/Admin
 Provides:	arping
 Obsoletes:	arping
 
-%description
+%description arping
 Ping <address> on device <interface> by ARP packets, using
 source address <source>.
 
