@@ -3,9 +3,9 @@
 %bcond_without	doc	# don't build documentation
 #
 Summary:	Utilities for IPv4/IPv6 networking
-Summary(pl):	U©ytki przeznaczone dla pracy z sieci╠ IPv4/IPv6
-Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
-Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
+Summary(pl.UTF-8):   Uе╪ytki przeznaczone dla pracy z sieciд┘ IPv4/IPv6
+Summary(ru.UTF-8):   п²п╟п╠п╬я─ п╠п╟п╥п╬п╡я▀я┘ я│п╣я┌п╣п╡я▀я┘ я┐я┌п╦п╩п╦я┌ (ping, tracepath etc.)
+Summary(uk.UTF-8):   п²п╟п╠я√я─ п╠п╟п╥п╬п╡п╦я┘ п╪п╣я─п╣п╤п╣п╡п╦я┘ я┐я┌п╦п╩я√я┌ (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
 Release:	4
@@ -45,31 +45,31 @@ IPv4/IPv6 networking utils:
 - tracepath/tracepath6 It traces path to <destination> discovering MTU
   along this path. It uses UDP port <port> or some random port.
 
-%description -l pl
-NarzЙdzia przeznaczone dla sieci IPv4/IPv6:
-- clockdiff Sprawdza rС©nicЙ czasu/daty pomiЙdzy nami a innym
-  komputerem z rozdzielczo╤ci╠ 1ms,
+%description -l pl.UTF-8
+Narzд≥dzia przeznaczone dla sieci IPv4/IPv6:
+- clockdiff Sprawdza rцЁе╪nicд≥ czasu/daty pomiд≥dzy nami a innym
+  komputerem z rozdzielczoе⌡ciд┘ 1ms,
 - ping/ping6,
 - traceroute6,
-- arping Pinguje <adres> na interfejsie <interfejs> wysyЁaj╠c pakiety
+- arping Pinguje <adres> na interfejsie <interfejs> wysyе┌ajд┘c pakiety
   ARP,
 - rdisc Klasyczny serwer router discovery,
-- tracepath/tracepath6 ╕ledzi drogЙ pakietСw do <przeznaczenia>
-  wykorzystuj╠c MTU discovery.
+- tracepath/tracepath6 е ledzi drogд≥ pakietцЁw do <przeznaczenia>
+  wykorzystujд┘c MTU discovery.
 
-%description -l ru
-Пакет iputils содержит набор базовых сетевых утилит (ping, tracepath
-etc.) от Алексея Кузнецова. Он НЕ включает классический traceroute,
-который содержится в отдельном пакете.
+%description -l ru.UTF-8
+п÷п╟п╨п╣я┌ iputils я│п╬п╢п╣я─п╤п╦я┌ п╫п╟п╠п╬я─ п╠п╟п╥п╬п╡я▀я┘ я│п╣я┌п╣п╡я▀я┘ я┐я┌п╦п╩п╦я┌ (ping, tracepath
+etc.) п╬я┌ п░п╩п╣п╨я│п╣я▐ п я┐п╥п╫п╣я├п╬п╡п╟. п·п╫ п²п∙ п╡п╨п╩я▌я┤п╟п╣я┌ п╨п╩п╟я│я│п╦я┤п╣я│п╨п╦п╧ traceroute,
+п╨п╬я┌п╬я─я▀п╧ я│п╬п╢п╣я─п╤п╦я┌я│я▐ п╡ п╬я┌п╢п╣п╩я▄п╫п╬п╪ п©п╟п╨п╣я┌п╣.
 
-%description -l uk
-Пакет iputils м╕стить наб╕р базових мережевих утил╕т (ping, tracepath
-etc.) в╕д Олекс╕я Кузн╓цова. В╕н НЕ м╕стить класичного traceroute,
-який м╕ститься в окремому пакет╕.
+%description -l uk.UTF-8
+п÷п╟п╨п╣я┌ iputils п╪я√я│я┌п╦я┌я▄ п╫п╟п╠я√я─ п╠п╟п╥п╬п╡п╦я┘ п╪п╣я─п╣п╤п╣п╡п╦я┘ я┐я┌п╦п╩я√я┌ (ping, tracepath
+etc.) п╡я√п╢ п·п╩п╣п╨я│я√я▐ п я┐п╥п╫я■я├п╬п╡п╟. п▓я√п╫ п²п∙ п╪я√я│я┌п╦я┌я▄ п╨п╩п╟я│п╦я┤п╫п╬пЁп╬ traceroute,
+я▐п╨п╦п╧ п╪я√я│я┌п╦я┌я▄я│я▐ п╡ п╬п╨я─п╣п╪п╬п╪я┐ п©п╟п╨п╣я┌я√.
 
 %package ping
 Summary:	IPv4 ping
-Summary(pl):	ping wykorzystuj╠cy IPv4
+Summary(pl.UTF-8):   ping wykorzystujд┘cy IPv4
 Group:		Networking/Admin
 Provides:	ping
 Obsoletes:	inetutils-ping
@@ -78,12 +78,12 @@ Obsoletes:	ping
 %description ping
 IPv4 ping.
 
-%description ping -l pl
-ping wykorzystuj╠cy IPv4.
+%description ping -l pl.UTF-8
+ping wykorzystujд┘cy IPv4.
 
 %package arping
 Summary:	arping
-Summary(pl):	arping
+Summary(pl.UTF-8):   arping
 Group:		Networking/Admin
 Provides:	arping
 Obsoletes:	arping
@@ -92,9 +92,9 @@ Obsoletes:	arping
 Ping <address> on device <interface> by ARP packets, using
 source address <source>.
 
-%description arping -l pl
-Pinguje <adres> na interfejsie <interfejs> wysyЁaj╠c pakiety
-ARP u©ywaj╠c ╪rСdЁowego adresu <╪rСdЁo>.
+%description arping -l pl.UTF-8
+Pinguje <adres> na interfejsie <interfejs> wysyе┌ajд┘c pakiety
+ARP uе╪ywajд┘c е╨rцЁdе┌owego adresu <е╨rцЁdе┌o>.
 
 %prep
 %setup  -q -n %{name}
