@@ -3,9 +3,9 @@
 %bcond_without	doc	# don't build documentation
 #
 Summary:	Utilities for IPv4/IPv6 networking
-Summary(pl.UTF-8):   Użytki przeznaczone dla pracy z siecią IPv4/IPv6
-Summary(ru.UTF-8):   Набор базовых сетевых утилит (ping, tracepath etc.)
-Summary(uk.UTF-8):   Набір базових мережевих утиліт (ping, tracepath etc.)
+Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
+Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
+Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
 Release:	4
@@ -69,7 +69,7 @@ etc.) від Олексія Кузнєцова. Він НЕ містить кл�
 
 %package ping
 Summary:	IPv4 ping
-Summary(pl.UTF-8):   ping wykorzystujący IPv4
+Summary(pl.UTF-8):	ping wykorzystujący IPv4
 Group:		Networking/Admin
 Provides:	ping
 Obsoletes:	inetutils-ping
@@ -83,7 +83,7 @@ ping wykorzystujący IPv4.
 
 %package arping
 Summary:	arping
-Summary(pl.UTF-8):   arping
+Summary(pl.UTF-8):	arping
 Group:		Networking/Admin
 Provides:	arping
 Obsoletes:	arping
