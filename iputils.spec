@@ -7,13 +7,13 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	ss021109
-Release:	4
+Version:	s20070202
+Release:	0.1
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
-Source0:	ftp://ftp.inr.ac.ru/ip-routing/%{name}-%{version}-try.tar.bz2
-# Source0-md5:	dd10ef3d76480990a2174d2bb0daddaf
+Source0:	http://www.skbuff.net/iputils/iputils-s20070202.tar.bz2
+# Source0-md5:	1d38fb3cfc2b71496e43cf646bfc1d6e
 Patch0:		%{name}-ping6-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
@@ -23,6 +23,7 @@ Patch5:		%{name}-pf.patch
 Patch6:		%{name}-syserror.patch
 Patch7:		%{name}-bindnow.patch
 Patch8:		%{name}-gcc34.patch
+URL:		http://linux-net.osdl.org/index.php/Iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
@@ -97,14 +98,16 @@ Pinguje <adres> na interfejsie <interfejs> wysyłając pakiety
 ARP używając źródłowego adresu <źródło>.
 
 %prep
-%setup  -q -n %{name}
-%patch0 -p0
-%patch1 -p1
+%setup  -q
+#%patch0 -p0
+#%patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p0
+# obsolete
+# %patch3 -p1
+#%patch4 -p0
 %patch5 -p1
-%patch6 -p1
+# obsolete
+#%patch6 -p1
 %patch7 -p0
 %patch8 -p1
 
@@ -122,13 +125,21 @@ ARP używając źródłowego adresu <źródło>.
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin}
 
-install arping clockdiff rdisc tracepath tracepath6 traceroute6 \
+install arping clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
 
 install ping ping6 $RPM_BUILD_ROOT/bin
 
 install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
+
+# no tftpd
+rm -f $RPM_BUILD_ROOT%{_sbindir}/tftpd
+rm -f $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*
+
+# we don't build pg kernel module
+rm -f $RPM_BUILD_ROOT%{_sbindir}/ipg
+rm -f $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -137,10 +148,12 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc RELNOTES %{?with_doc:doc/*.html}
 %attr(755,root,root) %{_sbindir}/tracepat*
+%attr(755,root,root) %{_sbindir}/rarpd
 %attr(755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %{_mandir}/man8/clockdiff.8*
+%{_mandir}/man8/rarpd.8*
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath*.8*
 %{_mandir}/man8/traceroute6.8*
