@@ -8,7 +8,7 @@ Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
-Release:	4
+Release:	5
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -147,8 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) /bin/ping
-%attr(4754,root,adm) /bin/ping6
+%attr(4754,root,adm) %verify(not mode) /bin/ping
+%attr(4754,root,adm) %verify(not mode) /bin/ping6
 %{_mandir}/man8/ping.8*
 
 %files arping
