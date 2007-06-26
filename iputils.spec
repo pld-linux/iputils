@@ -8,7 +8,7 @@ Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
-Release:	3
+Release:	5
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -19,6 +19,10 @@ Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch
 Patch3:		%{name}-gkh.patch
 Patch4:		%{name}-Makefile.patch
+Patch5:		%{name}-pf.patch
+Patch6:		%{name}-syserror.patch
+Patch7:		%{name}-bindnow.patch
+Patch8:		%{name}-gcc34.patch
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
@@ -99,6 +103,10 @@ ARP u©ywaj╠c ╪rСdЁowego adresu <╪rСdЁo>.
 %patch2 -p1
 %patch3 -p1
 %patch4 -p0
+%patch5 -p1
+%patch6 -p1
+%patch7 -p0
+%patch8 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
@@ -128,8 +136,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc RELNOTES %{?with_doc:doc/*.html}
-%attr(0755,root,root) %{_sbindir}/tracepat*
-%attr(0755,root,root) %{_sbindir}/rdisc
+%attr(755,root,root) %{_sbindir}/tracepat*
+%attr(755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %{_mandir}/man8/clockdiff.8*
@@ -139,7 +147,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %files ping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) /bin/ping*
+%attr(4754,root,adm) %verify(not mode) /bin/ping
+%attr(4754,root,adm) %verify(not mode) /bin/ping6
 %{_mandir}/man8/ping.8*
 
 %files arping
