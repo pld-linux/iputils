@@ -8,7 +8,7 @@ Summary(ru):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk):	Наб╕р базових мережевих утил╕т (ping, tracepath etc.)
 Name:		iputils
 Version:	ss021109
-Release:	5
+Release:	6
 Epoch:		1
 License:	BSD
 Group:		Networking/Admin
@@ -120,10 +120,12 @@ ARP u©ywaj╠c ╪rСdЁowego adresu <╪rСdЁo>.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin}
+install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
-install arping clockdiff rdisc tracepath tracepath6 traceroute6 \
+install clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
+
+install arping $RPM_BUILD_ROOT/sbin
 
 install ping ping6 $RPM_BUILD_ROOT/bin
 
@@ -153,5 +155,5 @@ rm -rf $RPM_BUILD_ROOT
 
 %files arping
 %defattr(644,root,root,755)
-%attr(4754,root,adm) %{_sbindir}/arping
+%attr(4754,root,adm) /sbin/arping
 %{_mandir}/man8/arping.8*
