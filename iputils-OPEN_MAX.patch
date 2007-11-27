@@ -16,7 +16,7 @@
 +		else {
 +			(void) fprintf(stderr, "sysconf() error\n");
 +		}
-+		exit(1);
++		open_max = 1024;
 +    }
 +
  	if ((pid=fork()) != 0)
