@@ -23,6 +23,7 @@ Patch5:		%{name}-pf.patch
 Patch6:		%{name}-syserror.patch
 Patch7:		%{name}-bindnow.patch
 Patch8:		%{name}-gcc34.patch
+Patch9:		%{name}-OPEN_MAX.patch
 URL:		http://linux-net.osdl.org/index.php/Iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
@@ -110,6 +111,7 @@ ARP używając źródłowego adresu <źródło>.
 #%patch6 -p1
 %patch7 -p0
 %patch8 -p1
+%patch9 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
