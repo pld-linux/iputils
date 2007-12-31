@@ -5,7 +5,7 @@
  	int t;
  	pid_t pid;
 +	long open_max; 
- 	
+ 
  	if (trace)
  		return;
  

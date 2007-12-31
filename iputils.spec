@@ -7,13 +7,13 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20070202
-Release:	2
+Version:	s20071127
+Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
-Source0:	http://www.skbuff.net/iputils/iputils-s20070202.tar.bz2
-# Source0-md5:	1d38fb3cfc2b71496e43cf646bfc1d6e
+Source0:	http://www.skbuff.net/iputils/iputils-%{version}.tar.bz2
+# Source0-md5:	12245e9927d60ff5cf4a99d265bcb7d3
 Patch0:		%{name}-ping6-no_cr_in_errors.patch
 Patch1:		%{name}-ping_sparcfix.patch
 Patch2:		%{name}-pmake.patch

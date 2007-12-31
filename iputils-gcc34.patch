@@ -10,7 +10,7 @@ http://bugs.gentoo.org/80969
 @@ -76,7 +76,7 @@
  	int progress = -1;
  	int broken_router;
- 	
+ 
 -restart:
 +       while (1) {
  	memset(&rcvbuf, -1, sizeof(rcvbuf));
