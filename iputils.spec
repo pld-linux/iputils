@@ -20,6 +20,7 @@ Patch2:		%{name}-bindnow.patch
 Patch3:		%{name}-gcc34.patch
 Patch4:		%{name}-OPEN_MAX.patch
 URL:		http://linux-net.osdl.org/index.php/Iputils
+BuildRequires:	docbook-dtd31-sgml
 %if %{with doc}
 BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
