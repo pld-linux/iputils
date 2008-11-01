@@ -1,6 +1,6 @@
 #
 # Conditional build
-%bcond_without	doc	# don't build documentation
+%bcond_without	doc	# don't build documentation (man, HTML)
 #
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
@@ -20,9 +20,7 @@ Patch2:		%{name}-bindnow.patch
 Patch3:		%{name}-gcc34.patch
 Patch4:		%{name}-OPEN_MAX.patch
 URL:		http://linux-net.osdl.org/index.php/Iputils
-BuildRequires:	docbook-dtd31-sgml
 %if %{with doc}
-BuildRequires:	docbook-dtd30-sgml
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
 %endif
@@ -102,8 +100,10 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 	CCOPT="%{rpmcflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1" \
 	LDLIBS=
 
-%{?with_doc:%{__make} html}
+%if %{with doc}
+%{__make} html
 %{__make} man
+%endif
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -116,8 +116,10 @@ install arping $RPM_BUILD_ROOT/sbin
 
 install ping ping6 $RPM_BUILD_ROOT/bin
 
+%if %{with doc}
 install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
+%endif
 
 # no tftpd
 rm -f $RPM_BUILD_ROOT%{_sbindir}/tftpd
@@ -138,19 +140,25 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
 %attr(4754,root,adm) %{_sbindir}/clockdiff
+%if %{with doc}
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rarpd.8*
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath*.8*
 %{_mandir}/man8/traceroute6.8*
+%endif
 
 %files ping
 %defattr(644,root,root,755)
 %attr(4754,root,adm) %verify(not mode) /bin/ping
 %attr(4754,root,adm) %verify(not mode) /bin/ping6
+%if %{with doc}
 %{_mandir}/man8/ping.8*
+%endif
 
 %files arping
 %defattr(644,root,root,755)
 %attr(4754,root,adm) /sbin/arping
+%if %{with doc}
 %{_mandir}/man8/arping.8*
+%endif
