@@ -7,18 +7,16 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20071127
-Release:	2
+Version:	s20100418
+Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
 Source0:	http://www.skbuff.net/iputils/%{name}-%{version}.tar.bz2
-# Source0-md5:	12245e9927d60ff5cf4a99d265bcb7d3
+# Source0-md5:	df6b0062118cdc5c62e3c810f831e976
 Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
-Patch3:		%{name}-gcc34.patch
-Patch4:		%{name}-OPEN_MAX.patch
 URL:		http://linux-net.osdl.org/index.php/Iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
@@ -90,8 +88,6 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p0
-%patch3 -p1
-%patch4 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
