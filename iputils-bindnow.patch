@@ -4,13 +4,19 @@ information leakage.
 
 http://bugs.gentoo.org/77526
 
---- Makefile
-+++ Makefile
-@@ -39,3 +39,7 @@
+--- iputils-s20100418/Makefile.orig	2010-04-18 06:45:45.000000000 +0200
++++ iputils-s20100418/Makefile	2010-08-15 10:09:35.402816591 +0200
+@@ -28,8 +28,13 @@
+ 
+ tftpd: tftpd.o tftpsubs.o
+ arping: arping.o -lsysfs
++	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
  ping: ping.o ping_common.o
 +	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
- ping6: ping6.o ping_common.o
+ ping6: ping6.o ping_common.o -lresolv -lcrypto
 +	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
 +traceroute6: traceroute6.o
 +	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
  ping.o ping6.o ping_common.o: ping_common.h
+ tftpd.o tftpsubs.o: tftp.h
+ 

@@ -87,7 +87,7 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p0
+%patch2 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
@@ -131,7 +131,8 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc RELNOTES %{?with_doc:doc/*.html}
-%attr(755,root,root) %{_sbindir}/tracepat*
+%attr(755,root,root) %{_sbindir}/tracepath
+%attr(755,root,root) %{_sbindir}/tracepath6
 %attr(755,root,root) %{_sbindir}/rarpd
 %attr(755,root,root) %{_sbindir}/rdisc
 %attr(4754,root,adm) %{_sbindir}/traceroute6
