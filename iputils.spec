@@ -8,7 +8,7 @@ Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, 
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	s20100418
-Release:	1
+Release:	2
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
@@ -17,6 +17,7 @@ Source0:	http://www.skbuff.net/iputils/%{name}-%{version}.tar.bz2
 Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
+Patch3:		%{name}-build.patch
 URL:		http://linux-net.osdl.org/index.php/Iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
@@ -88,6 +89,7 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
