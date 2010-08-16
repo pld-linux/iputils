@@ -22,6 +22,7 @@ URL:		http://linux-net.osdl.org/index.php/Iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
+BuildRequires:	gnome-doc-tools
 %endif
 BuildRequires:	linux-libc-headers
 Requires:	arping
