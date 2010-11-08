@@ -8,7 +8,7 @@ Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, 
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	s20100418
-Release:	3
+Release:	4
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
