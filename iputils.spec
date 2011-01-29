@@ -25,6 +25,8 @@ BuildRequires:	docbook-utils >= 0.6.10
 BuildRequires:	gnome-doc-tools
 %endif
 BuildRequires:	linux-libc-headers
+BuildRequires:	openssl-devel
+BuildRequires:	sysfsutils-devel
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
