@@ -18,7 +18,7 @@ Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
 Patch3:		%{name}-build.patch
-URL:		http://linux-net.osdl.org/index.php/Iputils
+URL:		http://www.linuxfoundation.org/collaborate/workgroups/networking/iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
@@ -123,12 +123,12 @@ echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 %endif
 
 # no tftpd
-rm -f $RPM_BUILD_ROOT%{_sbindir}/tftpd
-rm -f $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*
+%{__rm} $RPM_BUILD_ROOT%{_sbindir}/tftpd
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*
 
 # we don't build pg kernel module
-rm -f $RPM_BUILD_ROOT%{_sbindir}/ipg
-rm -f $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
+%{__rm} $RPM_BUILD_ROOT%{_sbindir}/ipg
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -136,17 +136,18 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc RELNOTES %{?with_doc:doc/*.html}
-%attr(755,root,root) %{_sbindir}/tracepath
-%attr(755,root,root) %{_sbindir}/tracepath6
+%attr(4754,root,adm) %{_sbindir}/clockdiff
 %attr(755,root,root) %{_sbindir}/rarpd
 %attr(755,root,root) %{_sbindir}/rdisc
+%attr(755,root,root) %{_sbindir}/tracepath
+%attr(755,root,root) %{_sbindir}/tracepath6
 %attr(4754,root,adm) %{_sbindir}/traceroute6
-%attr(4754,root,adm) %{_sbindir}/clockdiff
 %if %{with doc}
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/rarpd.8*
 %{_mandir}/man8/rdisc.8*
-%{_mandir}/man8/tracepath*.8*
+%{_mandir}/man8/tracepath.8*
+%{_mandir}/man8/tracepath6.8*
 %{_mandir}/man8/traceroute6.8*
 %endif
 
