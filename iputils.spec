@@ -8,7 +8,7 @@ Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, 
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	s20101006
-Release:	1
+Release:	2
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
@@ -18,6 +18,8 @@ Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
 Patch3:		%{name}-build.patch
+# http://cvsweb.openwall.com/cgi/cvsweb.cgi/~checkout~/Owl/packages/iputils/iputils-s20101006-owl-pingsock.diff?rev=1.1;content-type=text%2Fplain
+Patch4:		%{name}-pingsock.patch
 URL:		http://www.linuxfoundation.org/collaborate/workgroups/networking/iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
@@ -93,6 +95,7 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 # empty LDLIBS - don't link with -lresolv, it's not necessary
