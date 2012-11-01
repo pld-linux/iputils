@@ -4,19 +4,25 @@ information leakage.
 
 http://bugs.gentoo.org/77526
 
---- iputils-s20100418/Makefile.orig	2010-04-18 06:45:45.000000000 +0200
-+++ iputils-s20100418/Makefile	2010-08-15 10:09:35.402816591 +0200
-@@ -28,8 +28,13 @@
- 
+--- iputils-s20121011/Makefile.orig	2012-11-01 17:12:14.226219387 +0100
++++ iputils-s20121011/Makefile	2012-11-01 17:15:12.589545237 +0100
+@@ -42,15 +42,15 @@
+ clockdiff: clockdiff.o
+ 	$(LINK.o) -o $@ $^ $(LIB_CAP)
+ traceroute6: traceroute6.o
+-	$(LINK.o) -o $@ $^ $(LIB_CAP)
++	$(LINK.o) -o $@ $^ $(LIB_CAP) -Wl,-z,now -Wl,-z,relro
  tftpd: tftpd.o tftpsubs.o
- arping: arping.o -lsysfs
-+	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+ 	$(LINK.o) -o $@ $^ $(LIB_CAP)
+ arping: arping.o
+-	$(LINK.o) -o $@ $^ $(LIB_SYSFS) $(LIB_CAP)
++	$(LINK.o) -o $@ $^ $(LIB_SYSFS) $(LIB_CAP) -Wl,-z,now -Wl,-z,relro
  ping: ping.o ping_common.o
-+	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
- ping6: ping6.o ping_common.o -lresolv -lcrypto
-+	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
-+traceroute6: traceroute6.o
-+	$(LINK.o) $^ $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+-	$(LINK.o) -o $@ $^ $(LIB_CAP)
++	$(LINK.o) -o $@ $^ $(LIB_CAP) -Wl,-z,now -Wl,-z,relro
+ ping6: ping6.o ping_common.o
+-	$(LINK.o) -o $@ $^ -lresolv -lcrypto $(LIB_CAP)
++	$(LINK.o) -o $@ $^ -lresolv -lcrypto $(LIB_CAP) -Wl,-z,now -Wl,-z,relro
+ 
  ping.o ping6.o ping_common.o: ping_common.h
  tftpd.o tftpsubs.o: tftp.h
- 

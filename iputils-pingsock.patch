@@ -1,6 +1,5 @@
-diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
---- iputils-s20101006.orig/ping.c	2010-10-06 11:59:20 +0000
-+++ iputils-s20101006/ping.c	2011-03-24 12:21:30 +0000
+--- iputils-s20121011/ping.c.orig	2012-11-01 17:17:27.509539573 +0100
++++ iputils-s20121011/ping.c	2012-11-01 17:23:39.319523969 +0100
 @@ -88,6 +88,7 @@ struct sockaddr_in whereto;	/* who to pi
  int optlen = 0;
  int settos = 0;			/* Set TOS, Precendence or other QOS options */
@@ -22,7 +21,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  	socket_errno = errno;
  
  	uid = getuid();
-@@ -377,13 +382,35 @@ main(int argc, char **argv)
+@@ -399,13 +404,35 @@ main(int argc, char **argv)
  		}
  	}
  
@@ -63,7 +62,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  		struct icmp_filter filt;
  		filt.data = ~((1<<ICMP_SOURCE_QUENCH)|
  			      (1<<ICMP_DEST_UNREACH)|
-@@ -398,6 +425,12 @@ main(int argc, char **argv)
+@@ -420,6 +447,12 @@ main(int argc, char **argv)
  	hold = 1;
  	if (setsockopt(icmp_sock, SOL_IP, IP_RECVERR, (char *)&hold, sizeof(hold)))
  		fprintf(stderr, "WARNING: your kernel is veeery old. No problems.\n");
@@ -76,7 +75,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  
  	/* record route option */
  	if (options & F_RROUTE) {
-@@ -566,6 +599,7 @@ int receive_error_msg()
+@@ -588,6 +621,7 @@ int receive_error_msg()
  		nerrors++;
  	} else if (e->ee_origin == SO_EE_ORIGIN_ICMP) {
  		struct sockaddr_in *sin = (struct sockaddr_in*)(e+1);
@@ -84,7 +83,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  
  		if (res < sizeof(icmph) ||
  		    target.sin_addr.s_addr != whereto.sin_addr.s_addr ||
-@@ -576,9 +610,18 @@ int receive_error_msg()
+@@ -598,9 +632,18 @@ int receive_error_msg()
  			goto out;
  		}
  
@@ -105,7 +104,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  			struct icmp_filter filt;
  			working_recverr = 1;
  			/* OK, it works. Add stronger filter. */
-@@ -589,15 +632,14 @@ int receive_error_msg()
+@@ -611,15 +654,14 @@ int receive_error_msg()
  				perror("\rWARNING: setsockopt(ICMP_FILTER)");
  		}
  
@@ -114,9 +113,9 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  		if (options & F_QUIET)
  			goto out;
  		if (options & F_FLOOD) {
--			write(STDOUT_FILENO, "\bE", 2);
+-			write_stdout("\bE", 2);
 +			if (error_pkt)
-+				write(STDOUT_FILENO, "\bE", 2);
++				write_stdout("\bE", 2);
  		} else {
  			print_timestamp();
 -			printf("From %s icmp_seq=%u ", pr_addr(sin->sin_addr.s_addr), ntohs(icmph.un.echo.sequence));
@@ -124,7 +123,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  			pr_icmph(e->ee_type, e->ee_code, e->ee_info, NULL);
  			fflush(stdout);
  		}
-@@ -695,15 +737,41 @@ parse_reply(struct msghdr *msg, int cc, 
+@@ -717,15 +759,41 @@ parse_reply(struct msghdr *msg, int cc,
  	struct iphdr *ip;
  	int hlen;
  	int csfailed;
@@ -172,7 +171,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  	}
  
  	/* Now the ICMP part */
-@@ -716,7 +784,7 @@ parse_reply(struct msghdr *msg, int cc, 
+@@ -738,7 +806,7 @@ parse_reply(struct msghdr *msg, int cc,
  			return 1;			/* 'Twas not our ECHO */
  		if (gather_statistics((__u8*)icp, sizeof(*icp), cc,
  				      ntohs(icp->un.echo.sequence),
@@ -181,7 +180,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  				      pr_echo_reply))
  			return 0;
  	} else {
-@@ -807,7 +875,7 @@ parse_reply(struct msghdr *msg, int cc, 
+@@ -829,7 +897,7 @@ parse_reply(struct msghdr *msg, int cc,
  	}
  
  	if (!(options & F_FLOOD)) {
@@ -190,7 +189,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  
  		if (options & F_AUDIBLE)
  			putchar('\a');
-@@ -916,8 +984,7 @@ void pr_icmph(__u8 type, __u8 code, __u3
+@@ -965,8 +1033,7 @@ void pr_icmph(__u8 type, __u8 code, __u3
  			printf("Redirect, Bad Code: %d", code);
  			break;
  		}
@@ -200,7 +199,7 @@ diff -uNp -r iputils-s20101006.orig/ping.c iputils-s20101006/ping.c
  		if (icp && (options & F_VERBOSE))
  			pr_iph((struct iphdr*)(icp + 1));
  		break;
-@@ -1217,7 +1284,7 @@ void install_filter(void)
+@@ -1266,7 +1333,7 @@ void install_filter(void)
  		insns
  	};
  
