@@ -19,6 +19,7 @@ Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
 # http://cvsweb.openwall.com/cgi/cvsweb.cgi/~checkout~/Owl/packages/iputils/iputils-s20101006-owl-pingsock.diff?rev=1.1;content-type=text%2Fplain
 Patch3:		%{name}-pingsock.patch
+Patch4:		%{name}-doc.patch
 URL:		http://www.linuxfoundation.org/collaborate/workgroups/networking/iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
@@ -95,6 +96,7 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 %{__make} all \

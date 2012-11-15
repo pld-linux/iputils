@@ -4,9 +4,9 @@ information leakage.
 
 http://bugs.gentoo.org/77526
 
---- iputils-s20121106/Makefile.orig	2012-11-11 19:29:39.752768719 +0100
-+++ iputils-s20121106/Makefile	2012-11-11 19:32:42.666094377 +0100
-@@ -55,7 +55,7 @@
+--- iputils-s20121114/Makefile.orig	2012-11-15 17:01:22.376586746 +0100
++++ iputils-s20121114/Makefile	2012-11-15 17:02:39.039918482 +0100
+@@ -62,7 +62,7 @@
  
  # arping
  arping: arping.o
@@ -15,7 +15,7 @@ http://bugs.gentoo.org/77526
  
  # clockdiff
  clockdiff: clockdiff.o
-@@ -63,9 +63,9 @@
+@@ -80,9 +80,9 @@
  
  # ping / ping6
  ping: ping.o ping_common.o
@@ -27,8 +27,7 @@ http://bugs.gentoo.org/77526
  ping6.o: ping_common.h in6_flowlabel.h
  ping.o ping_common.o: ping_common.h
  
- # rarpd
-@@ -80,7 +80,7 @@
+@@ -100,7 +100,7 @@
  
  # traceroute6
  traceroute6: traceroute6.o
