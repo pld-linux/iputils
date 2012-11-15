@@ -103,6 +103,11 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 	CC="%{__cc}" \
 	CCOPT="%{rpmcflags} %{rpmcppflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1"
 
+cd ninfod
+%configure
+%{__make}
+cd ..
+
 %if %{with doc}
 %{__make} html
 %{__make} man
@@ -118,6 +123,10 @@ install clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
 install arping $RPM_BUILD_ROOT/sbin
 
 install ping ping6 $RPM_BUILD_ROOT/bin
+
+install ninfod/ninfod $RPM_BUILD_ROOT%{_sbindir}
+# TODO: PLDify, subpackage?
+#install ninfod/ninfod.sh $RPM_BUILD_ROOT/etc/rc.d/init.d
 
 %if %{with doc}
 install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
@@ -139,6 +148,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc RELNOTES %{?with_doc:doc/*.html}
 %attr(4754,root,adm) %{_sbindir}/clockdiff
+%attr(755,root,root) %{_sbindir}/ninfod
 %attr(755,root,root) %{_sbindir}/rarpd
 %attr(755,root,root) %{_sbindir}/rdisc
 %attr(755,root,root) %{_sbindir}/tracepath
@@ -146,6 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(4754,root,adm) %{_sbindir}/traceroute6
 %if %{with doc}
 %{_mandir}/man8/clockdiff.8*
+%{_mandir}/man8/ninfod.8*
 %{_mandir}/man8/rarpd.8*
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath.8*
