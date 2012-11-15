@@ -7,13 +7,13 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20121106
+Version:	s20121114
 Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
 Source0:	http://www.skbuff.net/iputils/%{name}-%{version}.tar.bz2
-# Source0-md5:	85b0f57f2ceb937aacd1c0cdb58de016
+# Source0-md5:	3966df066d598183f459011139e8987f
 Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
@@ -124,11 +124,11 @@ echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 
 # no tftpd
 %{__rm} $RPM_BUILD_ROOT%{_sbindir}/tftpd
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*
+%{?with_doc:%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*}
 
 # we don't build pg kernel module
 %{__rm} $RPM_BUILD_ROOT%{_sbindir}/ipg
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
+%{?with_doc:%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*}
 
 %clean
 rm -rf $RPM_BUILD_ROOT

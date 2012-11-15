@@ -10,8 +10,8 @@ http://bugs.gentoo.org/77526
  
  # arping
  arping: arping.o
--	$(LINK.o) $^ $(LIB_SYSFS) $(LIB_CAP) $(LDLIBS) -o $@
-+	$(LINK.o) $^ $(LIB_SYSFS) $(LIB_CAP) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+-	$(LINK.o) $^ $(LIB_SYSFS) $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@
++	$(LINK.o) $^ $(LIB_SYSFS) $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
  
  # clockdiff
  clockdiff: clockdiff.o
@@ -19,20 +19,21 @@ http://bugs.gentoo.org/77526
  
  # ping / ping6
  ping: ping.o ping_common.o
--	$(LINK.o) $^ $(LIB_CAP) $(LDLIBS) -o $@
-+	$(LINK.o) $^ $(LIB_CAP) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+-	$(LINK.o) $^ $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@
++	$(LINK.o) $^ $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
  ping6: ping6.o ping_common.o
--	$(LINK.o) $^ -lresolv -lcrypto $(LIB_CAP) $(LDLIBS) -o $@
-+	$(LINK.o) $^ -lresolv -lcrypto $(LIB_CAP) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
- ping.o ping6.o ping_common.o: ping_common.h
+-	$(LINK.o) $^ -lresolv -lcrypto $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@
++	$(LINK.o) $^ -lresolv -lcrypto $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+ ping6.o: ping_common.h in6_flowlabel.h
+ ping.o ping_common.o: ping_common.h
  
  # rarpd
 @@ -80,7 +80,7 @@
  
  # traceroute6
  traceroute6: traceroute6.o
--	$(LINK.o) $^ $(LIB_CAP) $(LDLIBS) -o $@
-+	$(LINK.o) $^ $(LIB_CAP) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
+-	$(LINK.o) $^ $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@
++	$(LINK.o) $^ $(LIB_CAP) $(LIB_IDN) $(LDLIBS) -o $@ -Wl,-z,now -Wl,-z,relro
  
  # tftpd
  tftpd: tftpd.o tftpsubs.o
