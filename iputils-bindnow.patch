@@ -4,9 +4,9 @@ information leakage.
 
 http://bugs.gentoo.org/77526
 
---- iputils-s20121126/Makefile.orig	2012-11-26 21:16:04.336458918 +0100
-+++ iputils-s20121126/Makefile	2012-11-26 21:18:36.459789081 +0100
-@@ -95,12 +95,13 @@
+--- iputils-s20121221/Makefile.orig	2012-12-21 15:01:07.000000000 +0100
++++ iputils-s20121221/Makefile	2013-01-08 17:31:42.110829497 +0100
+@@ -130,12 +130,13 @@
  %.o: %.c
  	$(COMPILE.c) $< $(DEF_$(patsubst %.o,%,$@)) -o $@
  $(TARGETS): %: %.o
@@ -15,24 +15,24 @@ http://bugs.gentoo.org/77526
  
  # -------------------------------------
  # arping
- DEF_arping = $(DEF_SYSFS) $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS) -DDEFAULT_DEVICE=\"$(ARPING_DEFAULT_DEVICE)\"
+ DEF_arping = $(DEF_SYSFS) $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
  LIB_arping = $(LIB_SYSFS) $(LIB_CAP) $(LIB_IDN)
 +LDOPTS_arping = -Wl,-z,now -Wl,-z,relro
  
- # clockdiff
- DEF_clockdiff = $(DEF_CAP)
-@@ -110,8 +111,10 @@
+ ifneq ($(ARPING_DEFAULT_DEVICE),)
+ DEF_arping += -DDEFAULT_DEVICE=\"$(ARPING_DEFAULT_DEVICE)\"
+@@ -149,8 +150,10 @@
  DEF_ping_common = $(DEF_CAP) $(DEF_IDN)
- DEF_ping  = $(DEF_CAP) $(DEF_IDN)
+ DEF_ping  = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
  LIB_ping  = $(LIB_CAP) $(LIB_IDN)
 +LDOPTS_ping = -Wl,-z,now -Wl,-z,relro
- DEF_ping6 = $(DEF_CAP) $(DEF_IDN) $(DEF_ENABLE_PING6_RTHDR)
- LIB_ping6 = $(LIB_CAP) $(LIB_IDN) -lresolv -lcrypto
+ DEF_ping6 = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS) $(DEF_ENABLE_PING6_RTHDR)
+ LIB_ping6 = $(LIB_CAP) $(LIB_IDN) $(LIB_RESOLV) $(LIB_CRYPTO)
 +LDOPTS_ping6 = -Wl,-z,now -Wl,-z,relro
  
  ping: ping_common.o
  ping6: ping_common.o
-@@ -137,6 +140,7 @@
+@@ -176,6 +179,7 @@
  # traceroute6
  DEF_traceroute6 = $(DEF_CAP) $(DEF_IDN)
  LIB_traceroute6 = $(LIB_CAP) $(LIB_IDN)
