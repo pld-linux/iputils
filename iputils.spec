@@ -25,6 +25,7 @@ BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
 BuildRequires:	gnome-doc-tools
 %endif
+BuildRequires:	gnutls-openssl-devel
 BuildRequires:	libcap-devel
 BuildRequires:	linux-libc-headers
 BuildRequires:	openssl-devel
