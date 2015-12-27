@@ -7,26 +7,23 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20121221
-Release:	2
+Version:	s20151218
+Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
 Source0:	http://www.skbuff.net/iputils/%{name}-%{version}.tar.bz2
-# Source0-md5:	6072aef64205720dd1893b375e184171
+# Source0-md5:	8aaa7395f27dff9f57ae016d4bc753ce
 Patch0:		%{name}-pmake.patch
 Patch1:		%{name}-pf.patch
 Patch2:		%{name}-bindnow.patch
-# http://cvsweb.openwall.com/cgi/cvsweb.cgi/~checkout~/Owl/packages/iputils/iputils-s20101006-owl-pingsock.diff?rev=1.1;content-type=text%2Fplain
-Patch3:		%{name}-pingsock.patch
 URL:		http://www.linuxfoundation.org/collaborate/workgroups/networking/iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
-BuildRequires:	gnome-doc-tools
 %endif
-BuildRequires:	gnutls-openssl-devel
 BuildRequires:	libcap-devel
+BuildRequires:	libgcrypt-devel
 BuildRequires:	linux-libc-headers
 BuildRequires:	openssl-devel
 BuildRequires:	sysfsutils-devel
@@ -95,7 +92,6 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{__make} all \

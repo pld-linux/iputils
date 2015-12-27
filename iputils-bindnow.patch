@@ -4,8 +4,8 @@ information leakage.
 
 http://bugs.gentoo.org/77526
 
---- iputils-s20121221/Makefile.orig	2012-12-21 15:01:07.000000000 +0100
-+++ iputils-s20121221/Makefile	2013-01-08 17:31:42.110829497 +0100
+--- iputils-s20151218/Makefile.orig	2015-12-17 16:45:51.000000000 +0100
++++ iputils-s20151218/Makefile	2015-12-27 20:30:00.256039502 +0100
 @@ -130,12 +130,13 @@
  %.o: %.c
  	$(COMPILE.c) $< $(DEF_$(patsubst %.o,%,$@)) -o $@
@@ -26,7 +26,7 @@ http://bugs.gentoo.org/77526
  DEF_ping  = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS)
  LIB_ping  = $(LIB_CAP) $(LIB_IDN)
 +LDOPTS_ping = -Wl,-z,now -Wl,-z,relro
- DEF_ping6 = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS) $(DEF_ENABLE_PING6_RTHDR)
+ DEF_ping6 = $(DEF_CAP) $(DEF_IDN) $(DEF_WITHOUT_IFADDRS) $(DEF_ENABLE_PING6_RTHDR) $(DEF_CRYPTO)
  LIB_ping6 = $(LIB_CAP) $(LIB_IDN) $(LIB_RESOLV) $(LIB_CRYPTO)
 +LDOPTS_ping6 = -Wl,-z,now -Wl,-z,relro
  
