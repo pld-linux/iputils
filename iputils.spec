@@ -112,19 +112,17 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
-install clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
+install -p clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
+install -p arping $RPM_BUILD_ROOT/sbin
+install -p ping ping6 $RPM_BUILD_ROOT/bin
 
-install arping $RPM_BUILD_ROOT/sbin
-
-install ping ping6 $RPM_BUILD_ROOT/bin
-
-install ninfod/ninfod $RPM_BUILD_ROOT%{_sbindir}
+install -p ninfod/ninfod $RPM_BUILD_ROOT%{_sbindir}
 # TODO: PLDify, subpackage?
 #install ninfod/ninfod.sh $RPM_BUILD_ROOT/etc/rc.d/init.d
 
 %if %{with doc}
-install doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+cp -p doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 %endif
 
