@@ -1,14 +1,14 @@
 #
 # Conditional build
 %bcond_without	doc	# don't build documentation (man, HTML)
-#
+
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	s20151218
-Release:	1
+Release:	2
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
@@ -58,18 +58,17 @@ etc.) от Алексея Кузнецова. Он НЕ включает кла�
 etc.) від Олексія Кузнєцова. Він НЕ містить класичного traceroute,
 який міститься в окремому пакеті.
 
-%package ping
+%package -n ping
 Summary:	IPv4 and IPv6 ping commands
 Summary(pl.UTF-8):	Programy ping wykorzystujące IPv4 i IPv6
 Group:		Networking/Admin
-Provides:	ping
 Obsoletes:	inetutils-ping
-Obsoletes:	ping
+Obsoletes:	iputils-ping < 2:s20151218-2
 
-%description ping
+%description -n ping
 IPv4 and IPv6 ping commands.
 
-%description ping -l pl.UTF-8
+%description -n ping -l pl.UTF-8
 Programy ping wykorzystujące IPv4 i IPv6.
 
 %package arping
@@ -157,7 +156,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/traceroute6.8*
 %endif
 
-%files ping
+%files -n ping
 %defattr(644,root,root,755)
 %attr(4755,root,root) %verify(not mode) /bin/ping
 %attr(4755,root,root) %verify(not mode) /bin/ping6
