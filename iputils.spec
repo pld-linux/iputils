@@ -7,17 +7,15 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20151218
-Release:	3
+Version:	s20180629
+Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
-Source0:	http://www.skbuff.net/iputils/%{name}-%{version}.tar.bz2
-# Source0-md5:	8aaa7395f27dff9f57ae016d4bc753ce
-Patch0:		%{name}-pmake.patch
-Patch1:		%{name}-pf.patch
-Patch2:		%{name}-bindnow.patch
-URL:		http://www.linuxfoundation.org/collaborate/workgroups/networking/iputils
+Source0:	https://github.com/iputils/iputils/archive/%{version}.tar.gz
+# Source0-md5:	866547f2ffb17b67049472c770703c83
+Patch0:		%{name}-pf.patch
+URL:		https://github.com/iputils/iputils
 %if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
@@ -89,18 +87,18 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
 
 %build
-%{__make} all \
-	CC="%{__cc}" \
-	CCOPT="%{rpmcflags} %{rpmcppflags} -D_GNU_SOURCE -DHAVE_SIN6_SCOPEID=1"
-
 cd ninfod
 %configure
-%{__make}
 cd ..
+
+%{__make} \
+	CFLAGS="%{rpmcflags} %{rpmcppflags}" \
+	LDLIB="%{rpmldflags}" \
+	LDFLAGS="%{rpmldflags}"
+
+%{__make} -C ninfod
 
 %if %{with doc}
 %{__make} html
@@ -111,17 +109,25 @@ cd ..
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
-install -p clockdiff ipg rarpd rdisc tftpd tracepath tracepath6 traceroute6 \
+install -p clockdiff ipg rarpd rdisc tftpd tracepath traceroute6 \
 	$RPM_BUILD_ROOT%{_sbindir}
 install -p arping $RPM_BUILD_ROOT/sbin
-install -p ping ping6 $RPM_BUILD_ROOT/bin
+install -p ping $RPM_BUILD_ROOT/bin
 
 install -p ninfod/ninfod $RPM_BUILD_ROOT%{_sbindir}
 # TODO: PLDify, subpackage?
 #install ninfod/ninfod.sh $RPM_BUILD_ROOT/etc/rc.d/init.d
 
+ln -s ping $RPM_BUILD_ROOT/bin/ping4
+ln -s ping $RPM_BUILD_ROOT/bin/ping6
+ln -s tracepath $RPM_BUILD_ROOT%{_sbindir}/tracepath4
+ln -s tracepath $RPM_BUILD_ROOT%{_sbindir}/tracepath6
+
 %if %{with doc}
 cp -p doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
+echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping4.8
+echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping6.8
+echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath4.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 %endif
 
@@ -131,19 +137,24 @@ echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 
 # we don't build pg kernel module
 %{__rm} $RPM_BUILD_ROOT%{_sbindir}/ipg
-%{?with_doc:%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*}
+%if %{with doc}
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/ipg.8*
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pgset.8*
+%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
+%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc RELNOTES %{?with_doc:doc/*.html}
+%doc README.md RELNOTES.old %{?with_doc:doc/*.html}
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %attr(755,root,root) %{_sbindir}/ninfod
 %attr(755,root,root) %{_sbindir}/rarpd
 %attr(755,root,root) %{_sbindir}/rdisc
 %attr(755,root,root) %{_sbindir}/tracepath
+%attr(755,root,root) %{_sbindir}/tracepath4
 %attr(755,root,root) %{_sbindir}/tracepath6
 %attr(4754,root,adm) %{_sbindir}/traceroute6
 %if %{with doc}
@@ -152,6 +163,7 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/rarpd.8*
 %{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath.8*
+%{_mandir}/man8/tracepath4.8*
 %{_mandir}/man8/tracepath6.8*
 %{_mandir}/man8/traceroute6.8*
 %endif
@@ -159,8 +171,11 @@ rm -rf $RPM_BUILD_ROOT
 %files -n ping
 %defattr(644,root,root,755)
 %attr(4755,root,root) %verify(not mode) /bin/ping
+%attr(4755,root,root) %verify(not mode) /bin/ping4
 %attr(4755,root,root) %verify(not mode) /bin/ping6
 %if %{with doc}
+%{_mandir}/man8/ping4.8*
+%{_mandir}/man8/ping6.8*
 %{_mandir}/man8/ping.8*
 %endif
 

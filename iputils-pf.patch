@@ -1,11 +1,11 @@
 --- iputils/ping.c~	2006-03-14 14:53:31.000000000 +0200
 +++ iputils/ping.c	2006-03-14 14:55:07.000000000 +0200
-@@ -1216,7 +1216,7 @@
- 	insns[2] = (struct sock_filter)BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, __constant_htons(ident), 0, 1);
+@@ -1665,7 +1665,7 @@ void ping4_install_filter(socket_st *soc
+ 	insns[2] = (struct sock_filter)BPF_JUMP(BPF_JMP|BPF_JEQ|BPF_K, htons(ident), 0, 1);
  
- 	if (setsockopt(icmp_sock, SOL_SOCKET, SO_ATTACH_FILTER, &filter, sizeof(filter)))
+ 	if (setsockopt(sock->fd, SOL_SOCKET, SO_ATTACH_FILTER, &filter, sizeof(filter)))
 -		perror("WARNING: failed to install socket filter\n");
 +		perror("WARNING: failed to install socket filter");
  }
  
- 
+ #define USAGE_NEWLINE	"\n           "
