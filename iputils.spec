@@ -1,28 +1,25 @@
 #
-# Conditional build
-%bcond_without	doc	# don't build documentation (man, HTML)
-
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20180629
-Release:	2
+Version:	s20190709
+Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
 Source0:	https://github.com/iputils/iputils/archive/%{version}.tar.gz
-# Source0-md5:	866547f2ffb17b67049472c770703c83
-Patch0:		%{name}-pf.patch
+# Source0-md5:	d8d1d5af83aeae946ae909ddc0041cca
 URL:		https://github.com/iputils/iputils
-%if %{with doc}
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
-%endif
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel
+BuildRequires:	libidn2-devel
+BuildRequires:	libmnl-devel
 BuildRequires:	linux-libc-headers
+BuildRequires:	meson
 BuildRequires:	openssl-devel
 BuildRequires:	sysfsutils-devel
 Requires:	arping
@@ -86,69 +83,55 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
-cd ninfod
-%configure
-cd ..
+%meson build \
+  --bindir=%{_sbindir} \
+  -DBUILD_NINFOD=true \
+  -DUSE_CAP=true \
+  -DUSE_GETTEXT=true \
+  -DUSE_IDN=true \
+  -DUSE_CRYPTO=gcrypt \
+  -DBUILD_ARPING=true \
+  -DBUILD_CLOCKDIFF=true \
+  -DBUILD_PING=true \
+  -DBUILD_RARPD=true \
+  -DBUILD_RDISC=true \
+  -DBUILD_TFTPD=false \
+  -DBUILD_TRACEPATH=true \
+  -DBUILD_TRACEROUTE6=true \
+  -DBUILD_MANS=true \
+  -DENABLE_RDISC_SERVER=true \
+  -DBUILD_NINFOD=true \
+  -DNINFOD_MESSAGES=true
 
-%{__make} \
-	CFLAGS="%{rpmcflags} %{rpmcppflags}" \
-	LDLIB="%{rpmldflags}" \
-	LDFLAGS="%{rpmldflags}"
-
-%{__make} -C ninfod
-
-%if %{with doc}
-%{__make} html
-%{__make} man
-%endif
+%ninja_build -C build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
-install -p clockdiff ipg rarpd rdisc tftpd tracepath traceroute6 \
-	$RPM_BUILD_ROOT%{_sbindir}
-install -p arping $RPM_BUILD_ROOT/sbin
-install -p ping $RPM_BUILD_ROOT/bin
+%ninja_install -C build
 
-install -p ninfod/ninfod $RPM_BUILD_ROOT%{_sbindir}
-# TODO: PLDify, subpackage?
-#install ninfod/ninfod.sh $RPM_BUILD_ROOT/etc/rc.d/init.d
+mv $RPM_BUILD_ROOT{%{_sbindir}/ping,/bin}
+mv $RPM_BUILD_ROOT{%{_sbindir}/arping,/sbin}
 
 ln -s ping $RPM_BUILD_ROOT/bin/ping4
 ln -s ping $RPM_BUILD_ROOT/bin/ping6
 ln -s tracepath $RPM_BUILD_ROOT%{_sbindir}/tracepath4
 ln -s tracepath $RPM_BUILD_ROOT%{_sbindir}/tracepath6
 
-%if %{with doc}
-cp -p doc/*.8 $RPM_BUILD_ROOT%{_mandir}/man8
 echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping4.8
 echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping6.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath4.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
-%endif
-
-# no tftpd
-%{__rm} $RPM_BUILD_ROOT%{_sbindir}/tftpd
-%{?with_doc:%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/tftpd*}
-
-# we don't build pg kernel module
-%{__rm} $RPM_BUILD_ROOT%{_sbindir}/ipg
-%if %{with doc}
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/ipg.8*
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pgset.8*
-%{__rm} $RPM_BUILD_ROOT%{_mandir}/man8/pg3*
-%endif
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.md RELNOTES.old %{?with_doc:doc/*.html}
+%doc README.md
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %attr(755,root,root) %{_sbindir}/ninfod
 %attr(755,root,root) %{_sbindir}/rarpd
@@ -157,7 +140,6 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/tracepath4
 %attr(755,root,root) %{_sbindir}/tracepath6
 %attr(4754,root,adm) %{_sbindir}/traceroute6
-%if %{with doc}
 %{_mandir}/man8/clockdiff.8*
 %{_mandir}/man8/ninfod.8*
 %{_mandir}/man8/rarpd.8*
@@ -166,22 +148,17 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/tracepath4.8*
 %{_mandir}/man8/tracepath6.8*
 %{_mandir}/man8/traceroute6.8*
-%endif
 
 %files -n ping
 %defattr(644,root,root,755)
 %attr(4755,root,root) %verify(not mode) /bin/ping
 %attr(4755,root,root) %verify(not mode) /bin/ping4
 %attr(4755,root,root) %verify(not mode) /bin/ping6
-%if %{with doc}
 %{_mandir}/man8/ping4.8*
 %{_mandir}/man8/ping6.8*
 %{_mandir}/man8/ping.8*
-%endif
 
 %files arping
 %defattr(644,root,root,755)
 %attr(4755,root,root) /sbin/arping
-%if %{with doc}
 %{_mandir}/man8/arping.8*
-%endif
