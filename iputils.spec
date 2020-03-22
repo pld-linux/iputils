@@ -1,4 +1,3 @@
-#
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
@@ -9,19 +8,23 @@ Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
+#Source0Download: https://github.com/iputils/iputils/releases
+#TODO:		https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
 Source0:	https://github.com/iputils/iputils/archive/%{version}.tar.gz
 # Source0-md5:	d8d1d5af83aeae946ae909ddc0041cca
+Patch0:		%{name}-libcap.patch
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-utils >= 0.6.10
+BuildRequires:	gcc >= 5:3.2
+BuildRequires:	gettext-tools
 BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel
+BuildRequires:	libgpg-error-devel
 BuildRequires:	libidn2-devel
-BuildRequires:	libmnl-devel
 BuildRequires:	linux-libc-headers
-BuildRequires:	meson
-BuildRequires:	openssl-devel
-BuildRequires:	sysfsutils-devel
+BuildRequires:	meson >= 0.39
+BuildRequires:	ninja >= 1.5
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -83,27 +86,29 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 
 %prep
 %setup -q
+%patch0 -p1
 
 %build
 %meson build \
-  --bindir=%{_sbindir} \
-  -DBUILD_NINFOD=true \
-  -DUSE_CAP=true \
-  -DUSE_GETTEXT=true \
-  -DUSE_IDN=true \
-  -DUSE_CRYPTO=gcrypt \
-  -DBUILD_ARPING=true \
-  -DBUILD_CLOCKDIFF=true \
-  -DBUILD_PING=true \
-  -DBUILD_RARPD=true \
-  -DBUILD_RDISC=true \
-  -DBUILD_TFTPD=false \
-  -DBUILD_TRACEPATH=true \
-  -DBUILD_TRACEROUTE6=true \
-  -DBUILD_MANS=true \
-  -DENABLE_RDISC_SERVER=true \
-  -DBUILD_NINFOD=true \
-  -DNINFOD_MESSAGES=true
+	--bindir=%{_sbindir} \
+	-DBUILD_NINFOD=true \
+	-DUSE_CAP=true \
+	-DUSE_GETTEXT=true \
+	-DUSE_IDN=true \
+	-DUSE_CRYPTO=gcrypt \
+	-DBUILD_ARPING=true \
+	-DBUILD_CLOCKDIFF=true \
+	-DBUILD_PING=true \
+	-DBUILD_RARPD=true \
+	-DBUILD_RDISC=true \
+	-DBUILD_TFTPD=false \
+	-DBUILD_TRACEPATH=true \
+	-DBUILD_TRACEROUTE6=true \
+	-DBUILD_MANS=true \
+	-DENABLE_RDISC_SERVER=true \
+	-DBUILD_NINFOD=true \
+	-DNINFOD_MESSAGES=true \
+	-Dsystemdunitdir=%{systemdunitdir}
 
 %ninja_build -C build
 
@@ -113,8 +118,8 @@ install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
 %ninja_install -C build
 
-mv $RPM_BUILD_ROOT{%{_sbindir}/ping,/bin}
-mv $RPM_BUILD_ROOT{%{_sbindir}/arping,/sbin}
+%{__mv} $RPM_BUILD_ROOT{%{_sbindir}/ping,/bin}
+%{__mv} $RPM_BUILD_ROOT{%{_sbindir}/arping,/sbin}
 
 ln -s ping $RPM_BUILD_ROOT/bin/ping4
 ln -s ping $RPM_BUILD_ROOT/bin/ping6
@@ -126,10 +131,12 @@ echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping6.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath4.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
 
+%find_lang %{name}
+
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%files
+%files -f %{name}.lang
 %defattr(644,root,root,755)
 %doc README.md
 %attr(4754,root,adm) %{_sbindir}/clockdiff
@@ -148,6 +155,9 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/tracepath4.8*
 %{_mandir}/man8/tracepath6.8*
 %{_mandir}/man8/traceroute6.8*
+%{systemdunitdir}/ninfod.service
+%{systemdunitdir}/rarpd@.service
+%{systemdunitdir}/rdisc.service
 
 %files -n ping
 %defattr(644,root,root,755)
