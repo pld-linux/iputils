@@ -1,3 +1,4 @@
+%bcond_without	systemd	# systemd
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
@@ -15,6 +16,7 @@ Source0:	https://github.com/iputils/iputils/archive/%{version}.tar.gz
 Patch0:		%{name}-libcap.patch
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
+BuildRequires:	docbook-style-xsl
 BuildRequires:	docbook-utils >= 0.6.10
 BuildRequires:	gcc >= 5:3.2
 BuildRequires:	gettext-tools
@@ -155,9 +157,11 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man8/tracepath4.8*
 %{_mandir}/man8/tracepath6.8*
 %{_mandir}/man8/traceroute6.8*
+%if %{with systemd}
 %{systemdunitdir}/ninfod.service
 %{systemdunitdir}/rarpd@.service
 %{systemdunitdir}/rdisc.service
+%endif
 
 %files -n ping
 %defattr(644,root,root,755)
