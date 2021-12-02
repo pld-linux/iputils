@@ -4,16 +4,13 @@ Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	s20190709
+Version:	20210722
 Release:	1
 Epoch:		2
 License:	BSD
 Group:		Networking/Admin
-#Source0Download: https://github.com/iputils/iputils/releases
-#TODO:		https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
-Source0:	https://github.com/iputils/iputils/archive/%{version}.tar.gz
-# Source0-md5:	d8d1d5af83aeae946ae909ddc0041cca
-Patch0:		%{name}-libcap.patch
+Source0:	https://github.com/iputils/iputils/archive/refs/tags/%{version}.tar.gz
+# Source0-md5:	dcce050011bf496079bcdf4a2eea20e8
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-style-xsl
@@ -88,7 +85,6 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 
 %prep
 %setup -q
-%patch0 -p1
 
 %build
 %meson build \
@@ -97,7 +93,6 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 	-DUSE_CAP=true \
 	-DUSE_GETTEXT=true \
 	-DUSE_IDN=true \
-	-DUSE_CRYPTO=gcrypt \
 	-DBUILD_ARPING=true \
 	-DBUILD_CLOCKDIFF=true \
 	-DBUILD_PING=true \
