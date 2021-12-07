@@ -1,4 +1,7 @@
-%bcond_without	systemd	# systemd
+#
+# Conditional build:
+%bcond_without	systemd	# systemd units
+
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
@@ -6,9 +9,11 @@ Summary(uk.UTF-8):	Набір базових мережевих утиліт (pi
 Name:		iputils
 Version:	20210722
 Release:	1
-Epoch:		2
+Epoch:		3
 License:	BSD
 Group:		Networking/Admin
+# TODO: use
+#Source0:	https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
 Source0:	https://github.com/iputils/iputils/archive/refs/tags/%{version}.tar.gz
 # Source0-md5:	dcce050011bf496079bcdf4a2eea20e8
 URL:		https://github.com/iputils/iputils
@@ -24,6 +29,7 @@ BuildRequires:	libidn2-devel
 BuildRequires:	linux-libc-headers
 BuildRequires:	meson >= 0.39
 BuildRequires:	ninja >= 1.5
+BuildRequires:	pkgconfig
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -89,22 +95,22 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %build
 %meson build \
 	--bindir=%{_sbindir} \
-	-DBUILD_NINFOD=true \
-	-DUSE_CAP=true \
-	-DUSE_GETTEXT=true \
-	-DUSE_IDN=true \
 	-DBUILD_ARPING=true \
 	-DBUILD_CLOCKDIFF=true \
+	-DBUILD_MANS=true \
+	-DBUILD_NINFOD=true \
 	-DBUILD_PING=true \
 	-DBUILD_RARPD=true \
 	-DBUILD_RDISC=true \
 	-DBUILD_TFTPD=false \
 	-DBUILD_TRACEPATH=true \
 	-DBUILD_TRACEROUTE6=true \
-	-DBUILD_MANS=true \
 	-DENABLE_RDISC_SERVER=true \
-	-DBUILD_NINFOD=true \
+	%{?with_systemd:-DINSTALL_SYSTEMD_UNITS=true} \
 	-DNINFOD_MESSAGES=true \
+	-DUSE_CAP=true \
+	-DUSE_GETTEXT=true \
+	-DUSE_IDN=true \
 	-Dsystemdunitdir=%{systemdunitdir}
 
 %ninja_build -C build
@@ -135,7 +141,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc README.md
+%doc CHANGES README.md
 %attr(4754,root,adm) %{_sbindir}/clockdiff
 %attr(755,root,root) %{_sbindir}/ninfod
 %attr(755,root,root) %{_sbindir}/rarpd
