@@ -3,7 +3,7 @@
 %bcond_without	systemd	# systemd units
 
 Summary:	Utilities for IPv4/IPv6 networking
-Summary(pl.UTF-8):	Użytki przeznaczone dla pracy z siecią IPv4/IPv6
+Summary(pl.UTF-8):	Narzędzia przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
@@ -30,6 +30,7 @@ BuildRequires:	linux-libc-headers
 BuildRequires:	meson >= 0.39
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
+BuildRequires:	rpmbuild(macros) >= 1.736
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -91,6 +92,9 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 
 %prep
 %setup -q
+
+# disable IPv6 tests (we don't run tests anyway)
+%{__sed} -i -e "/run_command/ s/'ip'/'false'/" ping/meson.build
 
 %build
 %meson build \
