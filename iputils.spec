@@ -1,21 +1,16 @@
-#
-# Conditional build:
-%bcond_without	systemd	# systemd units
-
 Summary:	Utilities for IPv4/IPv6 networking
 Summary(pl.UTF-8):	Narzędzia przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	20210722
-Release:	2
+Version:	20221126
+Release:	1
 Epoch:		3
-License:	BSD
+License:	GPL v2+ (arping, tracepath), BSD (the rest)
 Group:		Networking/Admin
 # TODO: use
-#Source0:	https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
-Source0:	https://github.com/iputils/iputils/archive/refs/tags/%{version}.tar.gz
-# Source0-md5:	dcce050011bf496079bcdf4a2eea20e8
+Source0:	https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	f2d296dc69135dcd2e95e3dd740fce94
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-style-xsl
@@ -27,7 +22,7 @@ BuildRequires:	libgcrypt-devel
 BuildRequires:	libgpg-error-devel
 BuildRequires:	libidn2-devel
 BuildRequires:	linux-libc-headers
-BuildRequires:	meson >= 0.39
+BuildRequires:	meson >= 0.40
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.736
@@ -38,8 +33,6 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 IPv4/IPv6 networking utils:
 - clockdiff - measures clock difference between us and destination
   with 1msec resolution,
-- traceroute6,
-- rdisc - classic router discovery daemon,
 - tracepath/tracepath6 - trace path to destination discovering MTU
   along this path using UDP packets
 
@@ -47,8 +40,6 @@ IPv4/IPv6 networking utils:
 Narzędzia przeznaczone dla sieci IPv4/IPv6:
 - clockdiff - sprawdza różnicę czasu/daty pomiędzy nami a innym
   komputerem z rozdzielczością 1ms,
-- traceroute6,
-- rdisc - klasyczny demon router discovery,
 - tracepath/tracepath6 - śledzą drogę pakietów do celu przy użyciu
   pakietów UDP, sprawdzając MTU
 
@@ -65,6 +56,7 @@ etc.) від Олексія Кузнєцова. Він НЕ містить кл�
 %package -n ping
 Summary:	IPv4 and IPv6 ping commands
 Summary(pl.UTF-8):	Programy ping wykorzystujące IPv4 i IPv6
+License:	BSD
 Group:		Networking/Admin
 Obsoletes:	inetutils-ping
 Obsoletes:	iputils-ping < 2:s20151218-2
@@ -78,6 +70,7 @@ Programy ping wykorzystujące IPv4 i IPv6.
 %package arping
 Summary:	arping utility
 Summary(pl.UTF-8):	Narzędzie arping
+License:	GPL v2+
 Group:		Networking/Admin
 Provides:	arping
 Obsoletes:	arping
@@ -102,20 +95,11 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 	-DBUILD_ARPING=true \
 	-DBUILD_CLOCKDIFF=true \
 	-DBUILD_MANS=true \
-	-DBUILD_NINFOD=true \
 	-DBUILD_PING=true \
-	-DBUILD_RARPD=true \
-	-DBUILD_RDISC=true \
-	-DBUILD_TFTPD=false \
 	-DBUILD_TRACEPATH=true \
-	-DBUILD_TRACEROUTE6=true \
-	-DENABLE_RDISC_SERVER=true \
-	%{?with_systemd:-DINSTALL_SYSTEMD_UNITS=true} \
-	-DNINFOD_MESSAGES=true \
 	-DUSE_CAP=true \
 	-DUSE_GETTEXT=true \
-	-DUSE_IDN=true \
-	-Dsystemdunitdir=%{systemdunitdir}
+	-DUSE_IDN=true
 
 %ninja_build -C build
 
@@ -145,31 +129,20 @@ rm -rf $RPM_BUILD_ROOT
 
 %files -f %{name}.lang
 %defattr(644,root,root,755)
-%doc CHANGES README.md
+%doc CHANGES LICENSE README.md
+# TODO: use capabilities (cap_net_raw,cap_sys_nice+ep)
 %attr(4754,root,adm) %{_sbindir}/clockdiff
-%attr(755,root,root) %{_sbindir}/ninfod
-%attr(755,root,root) %{_sbindir}/rarpd
-%attr(755,root,root) %{_sbindir}/rdisc
 %attr(755,root,root) %{_sbindir}/tracepath
 %attr(755,root,root) %{_sbindir}/tracepath4
 %attr(755,root,root) %{_sbindir}/tracepath6
-%attr(4754,root,adm) %{_sbindir}/traceroute6
 %{_mandir}/man8/clockdiff.8*
-%{_mandir}/man8/ninfod.8*
-%{_mandir}/man8/rarpd.8*
-%{_mandir}/man8/rdisc.8*
 %{_mandir}/man8/tracepath.8*
 %{_mandir}/man8/tracepath4.8*
 %{_mandir}/man8/tracepath6.8*
-%{_mandir}/man8/traceroute6.8*
-%if %{with systemd}
-%{systemdunitdir}/ninfod.service
-%{systemdunitdir}/rarpd@.service
-%{systemdunitdir}/rdisc.service
-%endif
 
 %files -n ping
 %defattr(644,root,root,755)
+# TODO: use capabilities (cap_net_raw+p)
 %attr(4755,root,root) %verify(not mode) /bin/ping
 %attr(4755,root,root) %verify(not mode) /bin/ping4
 %attr(4755,root,root) %verify(not mode) /bin/ping6
@@ -179,5 +152,6 @@ rm -rf $RPM_BUILD_ROOT
 
 %files arping
 %defattr(644,root,root,755)
+# TODO: use capabilities (cap_net_raw+p)
 %attr(4755,root,root) /sbin/arping
 %{_mandir}/man8/arping.8*
