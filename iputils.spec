@@ -21,6 +21,7 @@ BuildRequires:	libcap-devel
 BuildRequires:	libgcrypt-devel
 BuildRequires:	libgpg-error-devel
 BuildRequires:	libidn2-devel
+BuildRequires:	libxslt-progs
 BuildRequires:	linux-libc-headers
 BuildRequires:	meson >= 0.40
 BuildRequires:	ninja >= 1.5
