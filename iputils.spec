@@ -3,14 +3,14 @@ Summary(pl.UTF-8):	Narzędzia przeznaczone dla pracy z siecią IPv4/IPv6
 Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, tracepath etc.)
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
-Version:	20221126
+Version:	20231222
 Release:	1
 Epoch:		3
 License:	GPL v2+ (arping, tracepath), BSD (the rest)
 Group:		Networking/Admin
 # TODO: use
 Source0:	https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	f2d296dc69135dcd2e95e3dd740fce94
+# Source0-md5:	a9741e46dcb11457a32287470b0ce365
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-style-xsl
