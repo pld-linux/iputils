@@ -9,8 +9,8 @@ Epoch:		3
 License:	GPL v2+ (arping, tracepath), BSD (the rest)
 Group:		Networking/Admin
 # TODO: use
-Source0:	https://github.com/iputils/iputils/archive/%{version}/%{name}-%{version}.tar.gz
-# Source0-md5:	a9741e46dcb11457a32287470b0ce365
+Source0:	https://github.com/iputils/iputils/releases/download/%{version}/%{name}-%{version}.tar.xz
+# Source0-md5:	a9ce3496d5ba3a01eda359a24d780593
 URL:		https://github.com/iputils/iputils
 BuildRequires:	docbook-dtd31-sgml
 BuildRequires:	docbook-style-xsl
@@ -27,6 +27,8 @@ BuildRequires:	meson >= 0.40
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
 BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	tar >= 1:1.22
+BuildRequires:	xz
 Requires:	arping
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
