@@ -26,7 +26,7 @@ BuildRequires:	linux-libc-headers
 BuildRequires:	meson >= 0.58
 BuildRequires:	ninja >= 1.5
 BuildRequires:	pkgconfig
-BuildRequires:	rpmbuild(macros) >= 1.736
+BuildRequires:	rpmbuild(macros) >= 2.042
 BuildRequires:	tar >= 1:1.22
 BuildRequires:	xz
 Requires:	arping
@@ -93,7 +93,7 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 %{__sed} -i -e "/run_command/ s/'ip'/'false'/" ping/meson.build
 
 %build
-%meson build \
+%meson \
 	--bindir=%{_sbindir} \
 	-DBUILD_ARPING=true \
 	-DBUILD_CLOCKDIFF=true \
@@ -104,13 +104,13 @@ pakiety ARP z użyciem podanego adresu źródłowego.
 	-DUSE_GETTEXT=true \
 	-DUSE_IDN=true
 
-%ninja_build -C build
+%meson_build
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT{%{_sbindir},%{_mandir}/man8,/bin,/sbin}
 
-%ninja_install -C build
+%meson_install
 
 %{__mv} $RPM_BUILD_ROOT{%{_sbindir}/ping,/bin}
 %{__mv} $RPM_BUILD_ROOT{%{_sbindir}/arping,/sbin}
