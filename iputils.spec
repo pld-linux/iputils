@@ -4,7 +4,7 @@ Summary(ru.UTF-8):	Набор базовых сетевых утилит (ping, 
 Summary(uk.UTF-8):	Набір базових мережевих утиліт (ping, tracepath etc.)
 Name:		iputils
 Version:	20250605
-Release:	1
+Release:	2
 Epoch:		3
 License:	GPL v2+ (arping, tracepath), BSD (the rest)
 Group:		Networking/Admin
@@ -124,6 +124,8 @@ echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping4.8
 echo ".so ping.8" > $RPM_BUILD_ROOT%{_mandir}/man8/ping6.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath4.8
 echo ".so tracepath.8" > $RPM_BUILD_ROOT%{_mandir}/man8/tracepath6.8
+
+%{__mv} $RPM_BUILD_ROOT%{_localedir}/zh_{Hant,TW}
 
 %find_lang %{name}
 
